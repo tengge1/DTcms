@@ -1,0 +1,162 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新闻资讯 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+    $("#focus-box").flexslider({
+        directionNav: false,
+		pauseOnAction: false
+	});
+});
+</script>
+</head>
+
+<body id="news">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("news")%>">新闻资讯</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--推荐资讯-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-455" style="margin:0;height:341px;">
+                <div id="focus-box" class="focus-box">
+                    <ul class="slides">
+                    <%set DataTable focusNews=get_article_list(channel, 0, 8, "status=0 and is_slide=1 and img_url<>''")%>
+                    <%foreach(DataRow dr in focusNews.Rows)%>
+                        <li>
+                            <a title="{dr[title]}" href="<%linkurl("news_show",{dr[id]})%>">
+                                <span class="note-bg"></span>
+                                <span class="note-txt">{dr[title]}</span>
+                                <img src="{dr[img_url]}" />
+                            </a>
+                        </li>
+                    <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <div class="left-455">
+                <ul class="side-txt-list">
+                <%set DataTable newsList=get_article_list(channel, 0, 10, "status=0")%>
+                <%loop newdr newsList%>
+                    <%if(newdr__loop__id==1||newdr__loop__id==6)%>
+                    <li class="tit"><a href="<%linkurl("news_show",{newdr[id]})%>">{newdr[title]}</a></li>
+                    <%else%>
+                    <li><span><%datetostr({newdr[add_time]},yyyy-MM-dd)%></span><a href="<%linkurl("news_show",{newdr[id]})%>">{newdr[title]}</a></li>
+                    <%/if%>
+                <%/loop%>
+                </ul>
+            </div>
+            <div class="left-220">
+                <ul class="side-img-list">
+                <%set DataTable topNewsList=get_article_list(channel, 0, 4, "status=0 and is_top=1 and img_url<>''")%>
+                <%loop topdr topNewsList%>
+                    <li>
+                        <div class="img-box">
+                            <label>{topdr__loop__id}</label>
+                            <img src="{topdr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("news_show",{topdr[id]})%>">{topdr[title]}</a>
+                            <span><%datetostr({topdr[add_time]},yyyy-MM-dd)%></span>
+                        </div>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/推荐资讯-->
+
+<!--分类推荐-->
+<div class="section">
+    <%set DataTable categoryList=get_category_child_list(channel,0)%>
+    <%foreach(DataRow cdr in categoryList.Rows)%>
+    <!--子类-->
+    <div class="main-tit">
+        <h2>{cdr[title]}</h2>
+        <p>
+            <%set DataTable bcategoryList=get_category_child_list(channel,{strtoint({cdr[id]})})%>
+            <%foreach(DataRow dr in bcategoryList.Rows)%>
+            <a href="<%linkurl("news_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("news_list",{cdr[id]})%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <!--/子类-->
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <!--左边-->
+            <div class="left-925">
+                <div class="pad-15 bg-wrap">
+                    <ul class="rel-list">
+                    <%set DataTable dt=get_article_list(channel, {strtoint({cdr[id]})}, 6, "status=0 and img_url<>''")%>
+                    <%foreach(DataRow dr1 in dt.Rows)%>
+                        <li>
+                            <div class="img-box">
+                                <a title="{dr1[title]}" href="<%linkurl("news_show",{dr1[id]})%>">
+                                    <img src="{dr1[img_url]}">
+                                </a>
+                            </div>
+                            <div class="info">
+                                <h3><a title="{dr1[title]}" href="<%linkurl("news_show",{dr1[id]})%>">{dr1[title]}</a></h3>
+                                <p>{dr1[zhaiyao]}</p>
+                                <span>{dr1[add_time]}</span>
+                            </div>
+                        </li>
+                    <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <!--/左边-->
+            
+            <!--右边-->
+            <div class="left-220">
+                <div class="pad-15 bg-wrap">
+                    <ul class="focus-list">
+                    <%set DataTable hotList=get_article_list(channel, {strtoint({cdr[id]})}, 10, "status=0", "click desc,id desc")%>
+                    <%loop dr2 hotList%>
+                        <li>
+                            <%if(dr2__loop__id<2)%>
+                            <label class="hot">{dr2__loop__id}</label>
+                            <%else%>
+                            <label>{dr2__loop__id}</label>
+                            <%/if%>
+                            <a href="<%linkurl("news_show",{dr2[id]})%>">{dr2[title]}</a>
+                        </li>
+                    <%/loop%>
+                    </ul>
+                </div>
+            </div>
+            <!--/右边-->
+        </div>
+    </div>
+    <%/foreach%>
+</div>
+<!--/分类推荐-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

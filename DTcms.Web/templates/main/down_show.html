@@ -1,0 +1,192 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<%set string category_title=get_category_title(model.category_id,"资源下载")%>
+<title>{model.title} - {category_title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="down">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<%set string category_nav=get_category_menu("down_list", model.category_id)%>
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("down")%>">资源下载</a>
+        {category_nav}
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section">
+    <!--/页面右边-->
+    <div class="right-260">
+        <div class="bg-wrap nobg">
+            <div class="sidebar-box">
+                <h4>人气排行</h4>
+                <ul class="txt-list">
+                <%set DataTable hotDown=get_article_list(channel, 0, 10, "status=0", "click desc,id desc")%>
+                <%loop hotdr hotDown%>
+                    <li>
+                        <%if(hotdr__loop__id==1)%>
+                        <label class="hot">{hotdr__loop__id}</label>
+                        <%else%>
+                        <label>{hotdr__loop__id}</label>
+                        <%/if%>
+                        <a href="<%linkurl("down_show",{hotdr[id]})%>">{hotdr[title]}</a>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>推荐资源</h4>
+                <ul class="side-img-list">
+                <%set DataTable redDown=get_article_list(channel, 0, 5, "status=0 and is_red=1")%>
+                <%foreach(DataRow dr in redDown.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <a title="{dr[title]}" href="<%linkurl("down_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                            </a>
+                        </div>
+                        <div class="txt-box">
+                            <a title="{dr[title]}" href="<%linkurl("down_show",{dr[id]})%>">{dr[title]}</a>
+                            <span>{dr[add_time]}</span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <!--/页面右边-->
+    
+    <!--页面左边-->
+    <div class="left-auto">
+        <div class="bg-wrap">
+            <div class="meta">
+                <h2>{model.title}</h2>
+                <div class="info">
+                    <span><i class="iconfont icon-date"></i>{model.add_time}</span>
+                    <span><i class="iconfont icon-comment"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>人评论</span>
+                    <span><i class="iconfont icon-view"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={model.channel_id}&id={model.id}&click=1"></script>次</span>
+                </div>
+                <div class="note">
+                    <p>{model.zhaiyao}</p>
+                </div>
+            </div>
+            
+            <div class="entry">
+                {model.content}
+            </div>
+            
+            <div class="attach-list clearfix">
+                <h2 class="slide-tit">
+                    <span>附件下载</span>
+                </h2>
+                <ul>
+                <%if(model.attach!=null)%>
+                <%foreach(DTcms.Model.article_attach modelt in model.attach)%>
+                    <li>
+                        <a class="link-btn" href="javascript:;" onclick="downLink({modelt.point},'{config.webpath}tools/download.ashx?site={site.build_path}&id={modelt.id}');">
+                            <i class="iconfont icon-down"></i>下载
+                        </a>
+                        <div class="icon-box">
+                            <i class="iconfont icon-attach"></i>
+                        </div>
+                        <div class="info">
+                            <h3>{modelt.file_name}</h3>
+                            <p>
+                                <span>文件类型：{modelt.file_ext}</span>
+                                <span>
+                                    大小：
+                                    <%if {modelt.file_size}>1024%>
+                                        <%csharp%>
+                                            string tempSize = (modelt.file_size/1024f).ToString("#.##");
+                                        <%/csharp%>
+                                        {tempSize}MB
+                                    <%else%>
+                                        {modelt.file_size}KB
+                                    <%/if%>
+                                </span>
+                                <span>下载：<script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_attach_count&id={modelt.id}"></script>次</span>
+                                <span>所需积分：{modelt.point}</span>
+                            </p>
+                        </div>
+                    </li>
+                <%/foreach%>
+                <%/if%>
+                </ul>
+            </div>
+            
+            <!--上下一条-->
+            <div class="next-box clearfix">
+                <p class="prev">上一篇：<%=get_prevandnext_article("down_show", -1, "没有了", 0)%></p>
+                <p class="next">下一篇：<%=get_prevandnext_article("down_show", 1, "没有了", 0)%></p>
+            </div>
+            <!--/上下一条-->
+            
+            <!--相关资讯-->
+            <div class="rel-box">
+                <h2 class="slide-tit">
+                    <span>相关资源</span>
+                </h2>
+                <ul class="rel-list">
+                <%set DataTable relList=get_article_list(channel, model.category_id, 4, "is_red=1 and id<>"+model.id)%>
+                <%foreach(DataRow dr in relList.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <a title="{dr[title]}" href="<%linkurl("down_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                            </a>
+                      </div>
+                      <div class="info">
+                            <h3><a title="{dr[title]}" href="<%linkurl("down_show",{dr[id]})%>">{dr[title]}</a></h3>
+                            <p>{dr[zhaiyao]}</p>
+                            <span>{dr[add_time]}</span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                <%if(relList.Rows.Count<1)%>
+                    <div class="nodata">暂无相关数据...</div>
+                <%/if%>
+                </ul>
+            </div>
+            <!--/相关资讯-->
+            
+            <!--网友评论-->
+            <%if(model.is_msg==1)%>
+            <div class="comment-box">
+                <h2 class="slide-tit">
+                    <strong>共有<script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>条评论</strong>
+                    <span>网友评论</span>
+                </h2>
+                <%template src="_comment_box.html"%>
+            </div>
+            <%/if%>
+            <!--/网友评论-->
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

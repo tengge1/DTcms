@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta charset="utf-8">
+<title>跨平台方案直播方案L2(跨平台多终端适配)</title>
+<link rel="stylesheet" type="text/css" href="images/common.css"/>
+<script type="text/javascript" src="js/jquery172.js"></script>
+<script type="text/javascript" src="js/action.js"></script>
+</head>
+
+<body>
+<!--header/begin-->
+<div id="header">
+<div class="logo"><a href="index.html"><img src="images/logoCu.jpg" ></a></div>
+<div class="info"><a href="#"><img src="images/search.jpg" ></a></div>
+<div class="other"><a href="index.html">返回首页</a></div>
+</div>
+<!--header/end-->
+
+<!--content/begin-->
+<div id="content" >
+<div class="close_light_bg" id="close_light_bg"></div>
+
+<!--L2 CrossPlatform /begin -->
+<div class="video" id="CuPlayer" >
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+/*
+* 跨平台方案X1（基于普通HTTP协议）=============
+* @param {Object} vID        ID
+* @param {Object} vWidth     播放器宽度设置
+* @param {Object} vHeight    播放器高度设置
+* @param {Object} vFile      播放器配置文件
+* @param {Object} vPlayer    播放器文件
+* @param {Object} vPic       视频缩略图
+* @param {Object} vCssurl    移动端CSS应用文件
+* @param {Object} vServer    RTMP服务器地址
+* @param {Object} vMp4url    RTMP视频文件地址
+* @param {Object} vIosurl    视频文件地址
+
+* 跨平台方案X1说明=============
+* 本实例请在IIS/Apache等网站环境下测试
+* 本实例主要为了实现直播的跨平台
+* 本实例要求用户有RTMP流媒体环境/并且实现M3u8流
+*/
+var vID        = ""; 
+var vWidth     = "100%";            //播放器宽度设置
+var vHeight    = 400;               //播放器高度设置
+var vFile      = "CuSunV2setLive.xml";  //播放器配置文件
+var vPlayer    = "player.swf?v=3.5";//播放器文件
+var vPic       = "images/start.jpg";//视频缩略图
+var vCssurl    = "images/mini.css"; //移动端CSS应用文件
+//PC端
+var vServer    = "rtmp://www.yourSite.net/live"; //RTMP直播服务器地址
+var vMp4url    = "livestream";                   //RTMP视频文件地址
+//安卓端,iOS端,wp(以下地址为m3u8地址)
+var vIosurl    = "http://demo.yourSite.com/m3u8/livestream.m3u8"; //视频文件地址
+//-->
+</SCRIPT> 
+<script class="CuPlayerVideo" data-mce-role="CuPlayerVideo" type="text/javascript" src="js/CuSunL2.min.js"></script>
+</div>
+<!--L2 CrossPlatform /end -->
+<div class="title">跨平台直播方案L1（基于HTTP协议+ RTMP协议+m3u8）直播</div>
+
+
+<div class="clear"></div>
+<h3><span>相关视频</span></h3>
+<div class="piclist">
+<dl>
+<dt><a href="demoX1.html" class="p145x100"><img src="pic/pic01.jpg"  /></a></dt>
+<dd class="tit"><a href="demoX1.html" title="" target="_blank">中国品牌手机厂商崛起三星业绩下滑(X1)</a></dd>
+</dl>
+<dl>
+<dt><a href="demoX2.html" class="p145x100"><img src="pic/pic02.jpg"  /></a></dt>
+<dd class="tit"><a href="demoX2.html" title="" target="_blank">中国联通双4G领先计划产业链高端峰会(X2)</a></dd>
+</dl>
+<dl>
+<dt><a href="demoX3.html" class="p145x100"><img src="pic/pic03.jpg"  /></a></dt>
+<dd class="tit"><a href="demoX3.html" title="" target="_blank">电动汽车“跑太快”，汽车配套设施称烫手山芋(X3)</a></dd>
+</dl>
+<dl>
+<dt><a href="demoX4.html" class="p145x100"><img src="pic/pic04.jpg"  /></a></dt>
+<dd class="tit"><a href="demoX4.html" title="" target="_blank">腾讯：开放平台将连接智能硬件和线下服务(X4)</a></dd>
+</dl>
+<dl>
+<dt><a href="demoX1.html" class="p145x100"><img src="pic/pic05.jpg"  /></a></dt>
+<dd class="tit"><a href="demoX1.html" title="" target="_blank">微软再裁员3000，1.8万大裁员计划完成(X1)</a></dd>
+</dl> 
+</div>
+
+
+
+<div class="clear"></div>
+<h3><span>使用提示说明</span></h3>
+<!-- help/Bgein -->
+<div class="help">
+<div class="code" align="center">
+<p >手机端扫描以下二维码直接观看</p>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+var myURL = document.location.href; 
+document.writeln("<p id=\"jiathis_webchat\"><img alt=\"二维码加载中...\" style=\"margin-top: 15px;\" src=\"http://s.jiathis.com/qrcode.php?url=" + myURL + "\" height=\"240\" width=\"240\"><p class=\"open\">手机扫一扫 直接打开观看视频<br/>（支持安卓Android/苹果iOS/微信）</p></p>");
+//-->
+</SCRIPT> 
+</div>
+<p>
+        <strong>播放器使用环境及注意事项：</strong><br />
+        *  强烈建议使用<strong>酷播云端播放器</strong>（永久免费 /  支持视频数据统计分析），<a href="http://www.cuplayer.com/Cloud" target="_blank">马上使用&gt;&gt;</a><br />
+        *  请用户在IIS,Apache等web网站环境下使用；<br />
+        *  请确认您的环境是否支持支持flv,mp4等视频文件的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  播放器在使用过程中，支持加载XML(asp,php,jsp,aspx)等格式配置文件；<br />
+        * 请确认播放器相关的文件地址是否正确。
+        <br />
+        <strong>遇到问题如何获得帮助：</strong><br />
+        * 官方客服：QQ / <strong class="cRed2">261532593</strong> (验证请注明&ldquo;酷播&rdquo;字样)  <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=261532593&site=qq&menu=yes"><img src="http://wpa.qq.com/pa?p=2:261532593:41" alt="酷播网页播放器官方客服欢迎咨询" title="酷播网页播放器官方客服欢迎咨询" align="absmiddle" border="0" /></a><br />
+        <strong>如何正确的向客服提问？</strong> <br />
+    A:请将您的测试页上传到您的某个网站目录下，然后把测试页地址发给客服<br />
+    （如果您无法提供测试页地址，很多问题，无法协助您找出更准确的原因）； <br />
+  B:请尽可能的把问题，表述清楚。 </p>
+  
+</div>
+<!-- help/End -->
+<div style="display:none;">
+<script type="text/javascript" src="http://www.cuplayer.com/CuPlayer/js/stat.js"></script>
+</div>
+
+
+ 
+
+</div>
+<!--content/end-->
+
+
+
+<div class="clear"></div>
+<!--footer/begin-->  
+<div id="footer">
+	<div class="left-part">
+		<a href="http://www.cuplayer.com/" class="logo02"><img src="images/logoMini.jpg"></a><em>|</em><a href="http://www.cuplayer.com/CrossPlatform">返回首页>></a>
+	</div>
+	<div class="right-part">
+     <a href="http://v3.cuplayer.comdownload.html">实例下载</a>
+	</div>       
+</div>
+<!--footer/end-->
+
+</body>
+</html>

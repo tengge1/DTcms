@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>会员登录 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/login-validate.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("login")%>">会员登录</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--导航推荐-->
+<div class="section">
+    <div class="wrapper">
+        <div class="bg-wrap">
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">账户登录</a>
+                <i>|</i>
+                <a href="<%linkurl("register")%>">免费注册</a>
+            </div>
+            
+            <form id="loginform" name="loginform" class="login-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_login&site_id={site.id}">
+                <div class="input-box">
+                    <input id="txtUserName" name="txtUserName" type="text" placeholder="用户名/手机/邮箱" maxlength="50" />
+                </div>
+                <div class="input-box">
+                    <input id="txtPassword" name="txtPassword" type="password" placeholder="输入登录密码" maxlength="16" />
+                </div>
+                <div class="remember-box">
+                    <input id="chkRemember" name="chkRemember" type="checkbox" />
+                    <label for="chkRemember">记住登录状态</label>
+                    <a class="linkABlue" href="<%linkurl("repassword")%>">忘记密码?</a>
+                </div>
+                <div class="btn-box">
+                    <input id="btnSubmit" name="btnSubmit" type="submit" value="立即登录">
+                </div>
+                <div id="msgtips" class="tip-box"></div>
+                <div class="oatuh-box">
+                    <h3>您还可以使用以下方式登录：</h3>
+                    <p>
+                        <%set DataTable oauthList=get_site_oauth_list(0, "site_id="+site.id)%>
+                        <%foreach(DataRow dr in oauthList.Rows)%>
+                        <a title="{dr[title]}" href="{config.webpath}api/oauth/index.aspx?id={dr[id]}">
+                            <img src="{dr[img_url]}" />
+                        </a>
+                        <%/foreach%>
+                    </p>
+                </div>
+                <input id="turl" name="turl" type="hidden" value="{turl}" /><!--记住上一页网址-->
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

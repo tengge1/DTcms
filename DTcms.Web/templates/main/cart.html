@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>购物车 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/cart.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("cart")%>">购物车</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--页面内容-->
+<div class="section">
+    <div class="wrapper">
+        <div class="bg-wrap">
+            <!--购物车头部-->
+            <div class="cart-head clearfix">
+                <h2><i class="iconfont icon-cart"></i>我的购物车</h2>
+                <div class="cart-setp">
+                    <ul>
+                        <li class="first active">
+                            <div class="progress">
+                                <span>1</span>
+                                放进购物车
+                            </div>
+                        </li>
+                        <li>
+                            <div class="progress">
+                                <span>2</span>
+                                填写订单信息
+                            </div>
+                        </li>
+                        <li class="last">
+                            <div class="progress">
+                                <span>3</span>
+                                支付/确认订单
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--购物车头部-->
+            
+            <!--商品列表-->
+            <div class="cart-box">
+                <input id="jsondata" name="jsondata" type="hidden" />
+                <table width="100%" align="center" class="cart-table" border="0" cellspacing="0" cellpadding="8">
+                    <tr>
+                        <th width="48" align="center">
+                            <a onclick="selectCart(this);" href="javascript:;">全选</a>
+                        </th>
+                        <th align="left" colspan="2">商品信息</th>
+                        <th width="84" align="left">单价</th>
+                        <th width="104" align="center">数量</th>
+                        <th width="104" align="left">金额(元)</th>
+                        <th width="84" align="center">积分</th>
+                        <th width="54" align="center">操作</th>
+                    </tr>
+                    <%foreach(DTcms.Model.cart_items modelt in goodsList)%>
+                    <tr>
+                        <td align="center">
+                            <input type="checkbox" name="checkall" class="checkall" onclick="selectCart();" />
+                            <input name="hideChannelId" type="hidden" value="{modelt.channel_id}" />
+                            <input name="hideArticleId" type="hidden" value="{modelt.article_id}" />
+                            <input name="hideStockQuantity" type="hidden" value="{modelt.stock_quantity}" />
+                            <input name="hideGoodsPrice" type="hidden" value="{modelt.user_price}" />
+                            <input name="hidePoint" type="hidden" value="{modelt.point}" />
+                        </td>
+                        <td width="68">
+                            <a target="_blank" href="<%linkurl("goods_show",{modelt.article_id})%>">
+                                <img src="{modelt.img_url}" class="img" />
+                            </a>
+                        </td>
+                        <td>
+                            <a target="_blank" href="<%linkurl("goods_show",{modelt.article_id})%>">{modelt.title}</a>
+                        </td>
+                        <td>
+                            ￥{modelt.user_price}
+                        </td>
+                        <td align="center">
+                            <div class="buy-box">
+                                <a href="javascript:;" class="reduce" onclick="updateCart(this, '{config.webpath}', -1);">-</a>
+                                <input type="text" name="goodsQuantity" class="input" value="{modelt.quantity}" onblur="updateCart(this, '{config.webpath}');" onkeydown="return checkNumber(event);" />
+                                <a href="javascript:;" class="subjoin" onclick="updateCart(this, '{config.webpath}', 1);">+</a>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="red">
+                                ￥<label name="amountCount"><%=(modelt.user_price*modelt.quantity)%></label>
+                            </span>
+                        </td>
+                        <td align="center">
+                            <label name="pointCount">
+                                <%if(modelt.point>0)%>
+                                    +
+                                <%/if%>
+                                <%=(modelt.point*modelt.quantity)%>
+                            </label>
+                        </td>
+                        <td align="center">
+                            <a onclick="deleteCart('{config.webpath}', this);" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                    <%/foreach%>
+                    
+                    <%if(goodsList.Count<1)%>
+                    <tr>
+                        <td colspan="10">
+                            <div class="msg-tips">
+                                <div class="icon warning"><i class="iconfont icon-tip"></i></div>
+                                <div class="info">
+                                    <strong>购物车没有商品！</strong>
+                                    <p>您的购物车为空，<a href="<%linkurl("index")%>">马上去购物</a>吧！</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <%/if%>
+                    <tr>
+                        <th align="right" colspan="8">
+                            已选择商品 <b class="red" id="totalQuantity">0</b> 件 &nbsp;&nbsp;&nbsp;
+                            商品总金额（不含运费）：<span class="red">￥</span><b class="red" id="totalAmount">0</b>元
+                        </th>
+                    </tr>
+
+                </table>
+            </div>
+            <!--/商品列表-->
+            
+            <!--购物车底部-->
+            <div class="cart-foot clearfix">
+                <div class="left-box">
+                    <a onclick="selectCart(this);" href="javascript:;">全选</a>
+                    <a onclick="deleteCart('{config.webpath}');" href="javascript:;">清空购物车</a>
+                </div>
+                <div class="right-box">
+                    <button class="button" onclick="javascript:location.href='<%linkurl("index")%>';">继续购物</button>
+                    <button class="submit" onclick="formSubmit(this, '{config.webpath}', '<%linkurl("shopping")%>');">立即结算</button>
+                </div>
+            </div>
+            <!--购物车底部-->
+            
+        </div>
+    </div>
+</div>
+<!--/页面内容-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

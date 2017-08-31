@@ -1,0 +1,114 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>视频专区 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="video">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("video")%>">视频专区</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--/推荐视频-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-455" style="margin:0;">
+                <div class="side-img-box">
+                <%set DataTable focusList=get_article_list(channel, 0, 1, "status=0 and is_slide=1")%>
+                <%foreach(DataRow dr in focusList.Rows)%>
+                    <a href="<%linkurl("video_show",{dr[id]})%>">
+                        <em><i class="iconfont icon-play"></i></em>
+                        <div class="abs-bg"></div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p>{dr[sub_title]}</p>
+                        </div>
+                        <img src="{dr[img_url]}" />
+                    </a>
+                <%/foreach%>
+                </div>
+            </div>
+            <div class="left-690">
+                <ul class="img-list">
+                <%set DataTable redList=get_article_list(channel, 0, 6, "status=0 and is_red=1")%>
+                <%foreach(DataRow dr in redList.Rows)%>
+                    <li>
+                        <a href="<%linkurl("video_show",{dr[id]})%>">
+                            <div class="img-box"><img src="{dr[img_url]}" /></div>
+                            <em><i class="iconfont icon-play"></i></em>
+                            <div class="abs-bg"></div>
+                            <div class="remark">
+                                <h3>{dr[title]}</h3>
+                                <p>{dr[sub_title]}</p>
+                            </div>
+                        </a>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/推荐视频-->
+
+<!--分类推荐-->
+<div class="section">
+    <%set DataTable categoryList=get_category_child_list(channel,0)%>
+    <%foreach(DataRow cdr in categoryList.Rows)%>
+    <div class="main-tit">
+        <h2>{cdr[title]}</h2>
+        <p>
+            <%set DataTable bcategoryList=get_category_child_list(channel,{strtoint({cdr[id]})})%>
+            <%foreach(DataRow dr in bcategoryList.Rows)%>
+            <a href="<%linkurl("video_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("video_list",{cdr[id]})%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <ul class="img-list">
+            <%set DataTable dt=get_article_list(channel, {strtoint({cdr[id]})}, 5, "status=0")%>
+            <%foreach(DataRow dr in dt.Rows)%>
+                <li>
+                    <a href="<%linkurl("video_show",{dr[id]})%>">
+                        <div class="img-box"><img src="{dr[img_url]}" /></div>
+                        <em><i class="iconfont icon-play"></i></em>
+                        <div class="abs-bg"></div>
+                        <div class="remark">
+                            <h3>{dr[title]}</h3>
+                            <p>{dr[sub_title]}</p>
+                        </div>
+                    </a>
+                </li>
+            <%/foreach%>
+            </ul>
+        </div>
+    </div>
+    <%/foreach%>
+    
+</div>
+<!--/分类推荐-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

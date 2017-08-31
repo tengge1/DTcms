@@ -1,0 +1,174 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<%set string category_title=get_category_title(model.category_id,"图片分享")%>
+<title>{model.title} - {category_title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/viewer.min.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/viewer-jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('.album-list').viewer({
+        url: 'data-original',
+        navbar: false,
+        title: false
+    });
+});
+</script>
+</head>
+
+<body id="photo">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<%set string category_nav=get_category_menu("photo_list", model.category_id)%>
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("photo")%>">图片分享</a>
+        {category_nav}
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section">
+    <!--/页面右边-->
+    <div class="right-260">
+        <div class="bg-wrap nobg">
+            <div class="sidebar-box">
+                <h4>人气排行</h4>
+                <ul class="txt-list">
+                <%set DataTable hotPhoto=get_article_list(channel, 0, 10, "status=0", "click desc,id desc")%>
+                <%loop hotdr hotPhoto%>
+                    <li>
+                        <%if(hotdr__loop__id==1)%>
+                        <label class="hot">{hotdr__loop__id}</label>
+                        <%else%>
+                        <label>{hotdr__loop__id}</label>
+                        <%/if%>
+                        <a href="<%linkurl("photo_show",{hotdr[id]})%>">{hotdr[title]}</a>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>推荐图片</h4>
+                <ul class="side-img-list">
+                <%set DataTable redPhoto=get_article_list(channel, 0, 5, "status=0 and is_red=1")%>
+                <%foreach(DataRow dr in redPhoto.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <img src="{dr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("photo_show",{dr[id]})%>">{dr[title]}</a>
+                            <span>{dr[add_time]}</span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <!--/页面右边-->
+    
+    <!--页面左边-->
+    <div class="left-auto">
+        <div class="bg-wrap">
+            <div class="meta">
+                <h2>{model.title}</h2>
+                <div class="info">
+                    <span><i class="iconfont icon-date"></i>{model.add_time}</span>
+                    <span><i class="iconfont icon-comment"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>人评论</span>
+                    <span><i class="iconfont icon-view"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={model.channel_id}&id={model.id}&click=1"></script>次</span>
+                </div>
+                <div class="note">
+                    <p>{model.zhaiyao}</p>
+                </div>
+            </div>
+
+            <div class="album-list">
+                <ul>
+                <%if(model.albums!=null)%>
+                <%foreach(DTcms.Model.article_albums modelt in model.albums)%>
+                    <li>
+                        <a title="{modelt.remark}" href="javascript:;">
+                            <img data-original="{modelt.original_path}" src="{modelt.thumb_path}" />
+                        </a>
+                    </li>
+                <%/foreach%>
+                <%/if%>
+                </ul>
+            </div>
+            
+            <div class="entry">
+                {model.content}
+            </div>
+            
+            <!--上下一条-->
+            <div class="next-box clearfix">
+                <p class="prev">上一篇：<%=get_prevandnext_article("photo_show", -1, "没有了", 0)%></p>
+                <p class="next">下一篇：<%=get_prevandnext_article("photo_show", 1, "没有了", 0)%></p>
+            </div>
+            <!--/上下一条-->
+            
+            <!--相关资讯-->
+            <div class="rel-box">
+                <h2 class="slide-tit">
+                    <span>相关图片</span>
+                </h2>
+                <ul class="rel-list">
+                <%set DataTable relList=get_article_list(channel, model.category_id, 4, "is_red=1 and id<>"+model.id)%>
+                <%foreach(DataRow dr in relList.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <a title="{dr[title]}" href="<%linkurl("photo_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                            </a>
+                      </div>
+                      <div class="info">
+                            <h3><a title="{dr[title]}" href="<%linkurl("photo_show",{dr[id]})%>">{dr[title]}</a></h3>
+                            <p>{dr[zhaiyao]}</p>
+                            <span>{dr[add_time]}</span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                <%if(relList.Rows.Count<1)%>
+                    <div class="nodata">暂无相关数据...</div>
+                <%/if%>
+                </ul>
+            </div>
+            <!--/相关资讯-->
+            
+            <!--网友评论-->
+            <%if(model.is_msg==1)%>
+            <div class="comment-box">
+                <h2 class="slide-tit">
+                    <strong>共有<script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>条评论</strong>
+                    <span>网友评论</span>
+                </h2>
+                <%template src="_comment_box.html"%>
+            </div>
+            <%/if%>
+            <!--/网友评论-->
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

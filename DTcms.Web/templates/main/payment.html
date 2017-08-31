@@ -1,0 +1,184 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>支付中心－{config.webname}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="javascript:;">支付中心</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--导航推荐-->
+<div class="section">
+    <div class="wrapper">
+        <div class="bg-wrap">
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">支付中心</a>
+            </div>
+            
+            <%if(action=="confirm")%>
+            <!--确认订单-->
+            <form id="payForm" name="payForm" method="post" action="{config.webpath}api/payment/{payModel.api_path}/index.aspx" target="_blank">
+                <input id="pay_order_no" name="pay_order_no" type="hidden" value="{order_no}" />
+                <input id="pay_order_amount" name="pay_order_amount" type="hidden" value="{order_amount}" />
+                <input id="pay_user_name" name="pay_user_name" type="hidden" value="{userModel.user_name}" />
+                
+                <%if(order_type=="recharge")%>
+                    <!--充值订单-->
+                    <input id="pay_subject" name="pay_subject" type="hidden" value="账户充值" />
+                    <div class="form-box full">
+                        <dl class="form-group">
+                            <dt>订 单 号：</dt>
+                            <dd>{order_no}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>充值金额：</dt>
+                            <dd>{order_amount} 元</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>支付方式：</dt>
+                            <dd>{payModel.title}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dd>
+                                <input id="btnSubmit" name="btnSubmit" type="submit" value="确认支付" class="submit" />
+                            </dd>
+                        </dl>
+                    </div>
+                    <!--/充值订单-->
+                <%else if(order_type=="buygoods")%>
+                    <!--商品订单-->
+                    <input id="pay_subject" name="pay_subject" type="hidden" value="购买商品" />
+                    <div class="form-box full">
+                        <dl class="form-group">
+                            <dt>订 单 号：</dt>
+                            <dd>{order_no}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>收货人姓名：</dt>
+                            <dd>{orderModel.accept_name}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>送货地址：</dt>
+                            <dd>{orderModel.address}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>手机号码：</dt>
+                            <dd>{orderModel.mobile}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>固定电话：</dt>
+                            <dd>{orderModel.telphone}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>备注留言：</dt>
+                            <dd>{orderModel.message}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>支付金额：</dt>
+                            <dd>{order_amount} 元</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dt>支付方式：</dt>
+                            <dd>{payModel.title}</dd>
+                        </dl>
+                        <dl class="form-group">
+                            <dd>
+                                <input id="btnSubmit" name="btnSubmit" type="submit" value="确认支付" class="submit" />
+                            </dd>
+                        </dl>
+                    </div>
+                    <!--/商品订单-->
+                <%/if%>
+            </form>
+            <!--/确认订单-->
+            <%/if%>
+            
+            <%if(action=="succeed")%>
+            <!--支付成功-->
+            <div class="msg-tips">
+                <div class="icon">
+                    <i class="iconfont icon-check"></i>
+                </div>
+                <div class="info">
+                    <strong>订单已支付成功！</strong>
+                    <p>您可以点击这里进入<a href="<%linkurl("usercenter","index")%>">会员中心</a>查看订单状态！</p>
+                    <p>如有其它问题，请立即与我们客服人员联系。</p>
+                </div>
+            </div>
+            <!--/支付成功-->
+            <%/if%>
+            
+            <%if(action=="error")%>
+            <!--支付出错-->
+            <div class="msg-tips">
+                <div class="icon error">
+                    <i class="iconfont icon-error"></i>
+                </div>
+                <div class="info">
+                    <strong>订单支付失败！</strong>
+                    <p>支付错误，可点击这里进入<a href="<%linkurl("usercenter","index")%>">会员中心</a>查看订单状态！</p>
+                    <p>如需要核实订单状态，请立即与我们客服人员联系。</p>
+                </div>
+            </div>
+            <!--/支付出错-->
+            <%/if%>
+            
+            <%if(action=="login")%>
+            <!--用户未登录-->
+            <div class="msg-tips">
+                <div class="icon warning">
+                    <i class="iconfont icon-tip"></i>
+                </div>
+                <div class="info">
+                    <strong>对不起，请登录后再进行支付！</strong>
+                    <p>尚未登录或已经超时，请<a href="<%linkurl("login")%>">点击这里进行登录</a></p>
+                    <p>如果您尚未成为我们会员，请<a href="<%linkurl("register")%>">点击这里注册</a></p>
+                </div>
+            </div>
+            <!--/用户未登录-->
+            <%/if%>
+            
+            <%if(action=="recharge")%>
+            <!--用户余额不足-->
+            <div class="msg-tips">
+                <div class="icon warning">
+                    <i class="iconfont icon-tip"></i>
+                </div>
+                <div class="info">
+                    <strong>对不起，您的余额不足本次支付！</strong>
+                    <p>选择余额支付，必须确保账户余额充足才能支付订单金额</p>
+                    <p>请<a href="<%linkurl("useramount","recharge")%>">点击这里充值</a>后再进行后续支付！</p>
+                </div>
+            </div>
+            <!--/用户余额不足-->
+            <%/if%>
+            
+        </div>
+    </div>
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

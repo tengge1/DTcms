@@ -1,0 +1,57 @@
+﻿<div class="header">
+    <div class="head-top">
+        <div class="section">
+            <div class="left-box">
+                <span>网站链接：</span>
+                <a target="_blank" href="http://www.dtcms.net">动力启航官网</a>
+                <a target="_blank" href="http://demo.dtcms.net">DTcms演示站</a>
+            </div>
+            <script type="text/javascript">
+                $.ajax({
+                    type: "POST",
+                    url: "{config.webpath}tools/submit_ajax.ashx?action=user_check_login",
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data, textStatus) {
+                        if (data.status == 1) {
+                            $("#menu").prepend('<a href="<%linkurl("usercenter","exit")%>">退出</a><strong>|</strong>');
+                            $("#menu").prepend('<a href="<%linkurl("usercenter","index")%>">会员中心</a>');
+                        } else {
+                            $("#menu").prepend('<a href="<%linkurl("register")%>">注册</a><strong>|</strong>');
+                            $("#menu").prepend('<a href="<%linkurl("login")%>">登录</a>');
+                        }
+                    }
+                });
+            </script>
+            <div id="menu" class="right-box">
+                <a href="<%linkurl("content","contact")%>"><i class="iconfont icon-phone"></i>联系我们</a>
+                <a href="<%linkurl("cart")%>"><i class="iconfont icon-cart"></i>购物车(<span id="shoppingCartCount"><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_cart_count"></script></span>)</a>
+            </div>
+        </div>
+    </div>
+    <div class="head-nav">
+        <div class="section">
+            <div class="logo">
+                <a href="<%linkurl("index")%>"><img src="<%templateskin%>/images/logo.png" /></a>
+            </div>
+            <div class="nav-box">
+                <ul>
+                    <li class="index"><a href="<%linkurl("index")%>">首页</a></li>
+                    <li class="news"><a href="<%linkurl("news")%>">新闻资讯</a></li>
+                    <li class="goods"><a href="<%linkurl("goods")%>">购物商城</a></li>
+                    <li class="video"><a href="<%linkurl("video")%>">视频中心</a></li>
+                    <li class="photo"><a href="<%linkurl("photo")%>">图片分享</a></li>
+                    <li class="down"><a href="<%linkurl("down")%>">资源下载</a></li>
+                </ul>
+            </div>
+            <div class="search-box">
+                <div class="input-box">
+                    <input id="keywords" name="keywords" type="text" onkeydown="if(event.keyCode==13){SiteSearch('<%linkurl("search")%>', '#keywords');return false};" placeholder="输入关健字" x-webkit-speech="" />
+                </div>
+                <a href="javascript:;" onclick="SiteSearch('<%linkurl("search")%>', '#keywords');">
+                    <i class="iconfont icon-search"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

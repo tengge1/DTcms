@@ -1,0 +1,193 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>留言反馈 - {site.name}</title>
+<meta content="{site.seo_keyword}" name="keywords" />
+<meta content="{site.seo_description}" name="description" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}css/validate.css" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}css/pagination.css" />
+<link type="text/css" rel="stylesheet" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link type="text/css" rel="stylesheet" href="<%templateskin="main"%>/css/style.css" />
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" src="<%templateskin="main"%>/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	//初始化发表评论表单
+	AjaxInitForm('#feedback_form', '#btnSubmit', 1);
+});
+</script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template skin="main" src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("feedback")%>">留言反馈</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--/页面右边-->
+    <div class="right-260">
+        <div class="bg-wrap nobg">
+            <div class="sidebar-box">
+                <h4>栏目导航</h4>
+                <ul class="navbar">
+                    <%set DataTable contentlist=get_article_list("content", 0, 0, "status=0")%>
+                    <%foreach(DataRow dr in contentlist.Rows)%>
+                    <li>
+                        <h5><a title="{dr[title]}" href="<%linkurl("content",{dr[call_index]})%>">{dr[title]}</a></h5>
+                    </li>
+                    <%/foreach%>
+                    <li>
+                        <h5><a href="<%linkurl("feedback")%>">留言反馈</a></h5>
+                    </li>
+                    <li>
+                        <h5><a href="<%linkurl("link")%>">友情链接</a></h5>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>联系我们</h4>
+                <ul class="txt-list">
+                    <li>{site.company}</li>
+                    <li>地址：{site.address}</li>
+                    <li>电话：{site.tel}</li>
+                    <li>E-mail：{site.email}</li>
+                    <li>微信公众号：动力启航</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <!--/页面右边-->
+    
+    <!--页面左边-->
+    <div class="left-auto">
+        <div class="bg-wrap">
+            <div class="meta">
+                <h2>留言反馈</h2>
+            </div>
+            
+            <!--内容列表-->
+            <div class="comment-box">
+                <ul class="list-box">
+                    <%set DataTable feedbackList=new DTcms.Web.Plugin.Feedback.feedback().get_feedback_list(10, page, "", out totalcount)%>
+                    <%set string pagelist=get_page_link(10, page, totalcount, "feedback", "__id__")%>
+                    <%foreach(DataRow dr in feedbackList.Rows)%>
+                    <li>
+                        <div class="avatar-box">
+                            <i class="iconfont icon-user-full"></i>
+                        </div>
+                        <div class="inner-box">
+                            <div class="info">
+                                <span>{dr[user_name]}</span>
+                                <span>{dr[add_time]}</span>
+                            </div>
+                            <p>{dr[content]}</p>
+                        </div>
+                        
+                        <%if({dr[reply_content]}!="")%>
+                        <div class="answer-box">
+                            <div class="info">
+                                <span class="right">{dr[reply_time]}</span>
+                                <span>管理员回复：</span>
+                            </div>
+                            <p>{dr[reply_content]}</p>
+                        </div>
+                        <%/if%>
+                    </li>
+                    <%/foreach%>
+                    <%if(totalcount==0)%>
+                        <p style="margin:5px 0 15px;line-height:80px;text-align:center;border:1px solid #f7f7f7;">暂无留言，快来发表留言吧！</p>
+                    <%/if%>
+                </ul>
+                
+                <!--放置页码-->
+                <div class="page-box" style="margin:5px 0 0 62px;">
+                    <div id="pagination" class="digg">{pagelist}</div>
+                </div>
+                <!--/放置页码-->
+                
+                <h2 class="slide-tit">
+                    <span>发表留言</span>
+                </h2>
+                <form id="feedback_form" name="feedback_form" url="{config.webpath}plugins/feedback/ajax.ashx?action=add&site={site.id}">
+                <div class="form-box" style="margin:0 20px;">
+                    <dl class="form-group">
+                        <dt>用户昵称：</dt>
+                        <dd>
+                            <input id="txtUserName" name="txtUserName" type="text" class="input" datatype="*" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>联系电话：</dt>
+                        <dd>
+                            <input id="txtUserTel" name="txtUserTel" type="text" class="input" datatype="*0-20" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>在线QQ：</dt>
+                        <dd>
+                            <input id="txtUserQQ" name="txtUserQQ" type="text" class="input" datatype="*0-20" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>电子邮箱：</dt>
+                        <dd>
+                            <input id="txtUserEmail" name="txtUserEmail" type="text" class="input" />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>留言标题：</dt>
+                        <dd>
+                            <input id="txtTitle" name="txtTitle" type="text" class="input txt" datatype="*2-100" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>留言内容：</dt>
+                        <dd>
+                            <textarea id="txtContent" name="txtContent" class="textarea" datatype="*" sucmsg=" " style="height:80px;"></textarea>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>验 证 码：</dt>
+                        <dd>
+                            <input id="txtCode" name="txtCode" type="text" class="input code" placeholder="输入验证码" datatype="s4-20" nullmsg="请输入右边显示的验证码" sucmsg=" " />
+                            <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                                <img src="{config.webpath}tools/verify_code.ashx" width="80" height="22" /> 看不清楚？
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                      <dd>
+                          <input id="btnSubmit" name="btnSubmit" type="submit" value="发表留言" class="submit" />
+                      </dd>
+                    </dl>
+                </div>
+                </form>
+            </div>
+            <!--/内容列表-->
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template skin="main" src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

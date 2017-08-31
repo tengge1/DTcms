@@ -1,0 +1,338 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{site.seo_title}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jqslider.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+    $("#slide-box").jqslider(); //初始化幻灯片
+    $("#focus-box").flexslider({
+        directionNav: false,
+		pauseOnAction: false
+	});
+});
+</script>
+</head>
+
+<body id="index">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--Banner-->
+<div id="slide-box" class="slide-box">
+    <ul class="list-box">
+        <li><a href="javascript:;" target="_blank"><img src="<%templateskin%>/images/banner_1.png" /></a></li>
+        <li><a href="javascript:;" target="_blank"><img src="<%templateskin%>/images/banner_2.png" /></a></li>
+        <li><a href="javascript:;" target="_blank"><img src="<%templateskin%>/images/banner_3.png" /></a></li>
+    </ul>
+</div>
+<!--/Banner-->
+
+<!--新闻资讯-->
+<div class="section">
+    <div class="main-tit">
+        <h2>新闻资讯</h2>
+        <p>
+            <%set DataTable newsCList=get_category_child_list("news",0)%>
+            <%foreach(DataRow dr in newsCList.Rows)%>
+            <a href="<%linkurl("news_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("news")%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-455" style="margin:0;height:341px;">
+                <div id="focus-box" class="focus-box">
+                    <ul class="slides">
+                    <%set DataTable focusNews=get_article_list("news", 0, 8, "status=0 and is_slide=1 and img_url<>''")%>
+                    <%foreach(DataRow dr in focusNews.Rows)%>
+                        <li>
+                            <a title="{dr[title]}" href="<%linkurl("news_show",{dr[id]})%>">
+                                <span class="note-bg"></span>
+                                <span class="note-txt">{dr[title]}</span>
+                                <img src="{dr[img_url]}" />
+                            </a>
+                        </li>
+                    <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <div class="left-455">
+                <ul class="side-txt-list">
+                <%set DataTable newsList=get_article_list("news", 0, 10, "status=0")%>
+                <%loop newdr newsList%>
+                    <%if(newdr__loop__id==1||newdr__loop__id==6)%>
+                    <li class="tit"><a href="<%linkurl("news_show",{newdr[id]})%>">{newdr[title]}</a></li>
+                    <%else%>
+                    <li><span><%datetostr({newdr[add_time]},yyyy-MM-dd)%></span><a href="<%linkurl("news_show",{newdr[id]})%>">{newdr[title]}</a></li>
+                    <%/if%>
+                <%/loop%>
+                </ul>
+            </div>
+            <div class="left-220">
+                <ul class="side-img-list">
+                <%set DataTable topNewsList=get_article_list("news", 0, 4, "status=0 and is_top=1 and img_url<>''")%>
+                <%loop topdr topNewsList%>
+                    <li>
+                        <div class="img-box">
+                            <label>{topdr__loop__id}</label>
+                            <img src="{topdr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("news_show",{topdr[id]})%>">{topdr[title]}</a>
+                            <span><%datetostr({topdr[add_time]},yyyy-MM-dd)%></span>
+                        </div>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/新闻资讯-->
+
+<!--/购物商城-->
+<div class="section">
+    <div class="main-tit">
+        <h2>购物商城</h2>
+        <p>
+            <%set DataTable goodsCList=get_category_child_list("goods",0)%>
+            <%foreach(DataRow dr in goodsCList.Rows)%>
+            <a href="<%linkurl("goods_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("goods")%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <ul class="img-list">
+            <%set DataTable redGoods=get_article_list("goods", 0, 10, "status=0 and is_red=1")%>
+            <%foreach(DataRow dr in redGoods.Rows)%>
+                <li>
+                    <a title="{dr[title]}" href="<%linkurl("goods_show",{dr[id]})%>">
+                        <div class="img-box">
+                            <img src="{dr[img_url]}" />
+                        </div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p>
+                                <strong>人气 {dr[click]}</strong>
+                                <span class="price">¥{dr[sell_price]}</span>
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            <%/foreach%>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--/购物商城-->
+
+<!--/视频专区-->
+<div class="section">
+    <div class="main-tit">
+        <h2>视频专区</h2>
+        <p>
+            <%set DataTable videoCList=get_category_child_list("video",0)%>
+            <%foreach(DataRow dr in videoCList.Rows)%>
+            <a href="<%linkurl("video_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("video")%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-455" style="margin:0;">
+                <div class="side-img-box">
+                    <%set DataTable focusVideo=get_article_list("video", 0, 1, "status=0 and is_slide=1")%>
+                    <%foreach(DataRow dr in focusVideo.Rows)%>
+                    <a title="{dr[title]}" href="<%linkurl("video_show",{dr[id]})%>">
+                        <em><i class="iconfont icon-play"></i></em>
+                        <div class="abs-bg"></div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p>{dr[sub_title]}</p>
+                        </div>
+                        <img src="{dr[img_url]}" />
+                    </a>
+                    <%/foreach%>
+                </div>
+            </div>
+            <div class="left-690">
+                <ul class="img-list">
+                <%set DataTable redVideo=get_article_list("video", 0, 6, "status=0 and is_red=1")%>
+                <%foreach(DataRow dr in redVideo.Rows)%>
+                    <li>
+                        <a title="{dr[title]}" href="<%linkurl("video_show",{dr[id]})%>">
+                            <div class="img-box"><img src="{dr[img_url]}" /></div>
+                            <em><i class="iconfont icon-play"></i></em>
+                            <div class="abs-bg"></div>
+                            <div class="remark">
+                                <h3>{dr[title]}</h3>
+                                <p>{dr[sub_title]}</p>
+                            </div>
+                        </a>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/视频专区-->
+
+<!--/图片分享-->
+<div class="section">
+    <div class="main-tit">
+        <h2>图片分享</h2>
+        <p>
+            <%set DataTable photoCList=get_category_child_list("photo",0)%>
+            <%foreach(DataRow dr in photoCList.Rows)%>
+            <a href="<%linkurl("photo_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("photo")%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-455" style="margin:0;">
+                <div class="side-img-box">
+                <%set DataTable focusPhoto=get_article_list("photo", 0, 1, "status=0 and is_slide=1")%>
+                <%foreach(DataRow dr in focusPhoto.Rows)%>
+                    <a title="{dr[title]}" href="<%linkurl("photo_show",{dr[id]})%>">
+                        <div class="abs-bg"></div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p><%datetostr({dr[add_time]},yyyy-MM-dd)%></p>
+                        </div>
+                        <img src="{dr[img_url]}" />
+                    </a>
+                <%/foreach%>
+                </div>
+            </div>
+            <div class="left-690">
+                <ul class="img-list">
+                <%set DataTable redPhoto=get_article_list("photo", 0, 6, "status=0 and is_red=1")%>
+                <%foreach(DataRow dr in redPhoto.Rows)%>
+                    <li>
+                        <a title="{dr[title]}" href="<%linkurl("photo_show",{dr[id]})%>">
+                            <div class="img-box"><img src="{dr[img_url]}" /></div>
+                            <div class="abs-bg"></div>
+                            <div class="remark">
+                                <h3>{dr[title]}</h3>
+                                <p><%datetostr({dr[add_time]},yyyy-MM-dd)%></p>
+                            </div>
+                        </a>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/图片分享-->
+
+<!--/资源下载-->
+<div class="section">
+    <div class="main-tit">
+        <h2>资源下载</h2>
+        <p>
+            <%set DataTable downCList=get_category_child_list("down",0)%>
+            <%foreach(DataRow dr in downCList.Rows)%>
+            <a href="<%linkurl("down_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("down")%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <ul class="img-list">
+            <%set DataTable redDown=get_article_list("down", 0, 5, "status=0 and is_red=1")%>
+            <%foreach(DataRow dr in redDown.Rows)%>
+                <li>
+                    <a title="{dr[title]}" href="<%linkurl("down_show",{dr[id]})%>">
+                        <div class="img-box"><img src="{dr[img_url]}" /></div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p>
+                                <strong>下载 <script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_attach_count&channel_id={dr[channel_id]}&id={dr[id]}&view=count"></script></strong>
+                                <span><%datetostr({dr[add_time]},yyyy-MM-dd)%></span>
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            <%/foreach%>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--/资源下载-->
+
+<!--留言链接-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <div class="left-690 side-link-wrap" style="margin:0;">
+            <div class="main-tit">
+                <h2>友情链接</h2>
+                <p>
+                    <a href="<%linkurl("link")%>">更多<i>+</i></a>
+                </p>
+            </div>
+            <div class="side-link clearfix">
+                <ul class="img">
+                <%set DataTable linkImg=get_plugin_method("DTcms.Web.Plugin.Link", "link", "get_link_list", 6, "site_id="+site.id+" and is_lock=0 and is_image=1 and is_red=1")%>
+                <%foreach(DataRow dr in linkImg.Rows)%>
+                    <li>
+                        <a title="{dr[title]}" href="{dr[site_url]}" target="_blank">
+                            <img src="{dr[img_url]}">
+                        </a>
+                    </li>
+                <%/foreach%>
+                </ul>
+                <div class="txt">
+                <%set DataTable linkTxt=get_plugin_method("DTcms.Web.Plugin.Link", "link", "get_link_list", 0, "site_id="+site.id+" and is_lock=0 and is_image=0 and is_red=1")%>
+                <%foreach(DataRow dr in linkTxt.Rows)%>
+                    <a href="{dr[site_url]}" target="_blank">{dr[title]}</a>
+                    <strong>|</strong>
+                <%/foreach%>
+                </div>
+            </div>
+        </div>
+        <div class="left-455">
+            <div class="main-tit">
+                <h2>留言反馈</h2>
+                <p>
+                    <a href="<%linkurl("feedback")%>">更多<i>+</i></a>
+                </p>
+            </div>
+            <div class="side-book">
+                <ul>
+                <%set DataTable backList=get_plugin_method("DTcms.Web.Plugin.Feedback", "feedback", "get_feedback_list", 4, "is_lock=0 and site_id="+site.id)%>
+                <%foreach(DataRow dr in backList.Rows)%>
+                    <li>
+                        <span><%datetostr({dr[add_time]},yyyy-MM-dd)%></span>
+                        <a href="<%linkurl("feedback")%>">{dr[title]}</a>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--留言链接-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

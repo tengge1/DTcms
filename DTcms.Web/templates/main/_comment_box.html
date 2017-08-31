@@ -1,0 +1,56 @@
+﻿                <%set int comment_count=get_comment_count(model.channel_id, model.id, "is_lock=0")%><!--取得评论总数-->
+                <link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+                <link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+                <link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+                <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+                <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+                <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+                <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.pagination.js"></script>
+                <script type="text/javascript">
+                    $(function(){
+                        //初始化评论列表
+                        pageInitComment();
+                        //初始化发表评论表单
+                        AjaxInitForm('#commentForm', '#btnSubmit', 1, '', pageInitComment);
+                    });
+                    //初始化评论列表
+                    function pageInitComment(){
+                        AjaxPageList('#commentList', '#pagination', 10, {comment_count}, '{config.webpath}tools/submit_ajax.ashx?action=comment_list&channel_id={model.channel_id}&article_id={model.id}');
+                    }
+                </script>
+                <form id="commentForm" name="commentForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=comment_add&channel_id={model.channel_id}&article_id={model.id}">
+                    <div class="avatar-box">
+                        <%set bool isLogin=IsUserLogin()%>
+                        <%if(isLogin==true)%>
+                            <%set string userAvatar=GetUserInfo().avatar%>
+                            <%if(userAvatar!="")%>
+                            <img src="{userAvatar}" />
+                            <%else%>
+                            <i class="iconfont icon-user-full"></i>
+                            <%/if%>
+                        <%else%>
+                            <i class="iconfont icon-user-full"></i>
+                        <%/if%>
+                    </div>
+                    <div class="conn-box">
+                        <div class="editor">
+                            <textarea id="txtContent" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
+                        </div>
+                        <div class="subcon">
+                            <input id="btnSubmit" name="submit" type="submit" value="提交评论"class="submit" />
+                            <strong>验证码：</strong>
+                            <input id="txtCode" name="txtCode" class="code" onkeydown="if(event.ctrlKey&amp;&amp;event.keyCode==13){document.getElementById('btnSubmit').click();return false};" type="text" sucmsg=" " datatype="s4-4" errormsg="请填写4位验证码" nullmsg="请填写验证码！" />
+                            <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                                <img width="80" height="22" src="{config.webpath}tools/verify_code.ashx"> 看不清楚？
+                            </a>
+                        </div>
+                    </div>
+                </form>
+                
+                <ul id="commentList" class="list-box"></ul>
+                
+                <!--放置页码-->
+                <div class="page-box" style="margin:5px 0 0 62px">
+                    <div id="pagination" class="digg"></div>
+                </div>
+                <!--/放置页码-->

@@ -1,0 +1,180 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的订单 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css"/>
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("usercenter","index")%>">会员中心</a>
+        <a href="<%linkurl("userorder","list")%>">我的订单</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--页面左边-->
+    <%template src="_ucenter_nav.html"%>
+    <!--/页面左边-->
+    
+    <!--页面左边-->
+    <div class="right-auto">
+        <div class="bg-wrap" style="min-height:765px;">
+            <%if {action}=="list"%>
+            <!--交易订单-->
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="<%linkurl("userorder","list")%>">交易订单</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("userorder","close")%>">已关闭订单</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ftable">
+                    <tr>
+                        <th width="16%" align="left">订单号</th>
+                        <th align="left">订单商品</th>
+                        <th width="10%">姓名</th>
+                        <th width="12%">订单金额</th>
+                        <th width="11%">下单时间</th>
+                        <th width="10%">状态</th>
+                        <th width="12%">操作</th>
+                    </tr>
+                    <%set DataTable list=get_order_list(10, page, "user_id="+userModel.id+" and status<=3", out totalcount)%> <!--取得一个DataTable-->
+                    <%set string pagelist=get_page_link(10, page, totalcount, "userorder", action, "__id__")%> <!--取得分页页码列表-->
+                    <%foreach(DataRow dr in list.Rows)%>
+                    <tr>
+                        <td>{dr[order_no]}</td>
+                        <td>
+                            <%set List<DTcms.Model.article> ls=get_order_goods_list({strtoint({dr[id]})})%>
+                            <%if(ls!=null)%>
+                                <%foreach(DTcms.Model.article modelt in ls)%>
+                                    <a target="_blank" title="{modelt.title}" href="<%linkurl("goods_show",{modelt.id})%>">
+                                        <img width="60" height="60" alt="{modelt.title}" src="{modelt.img_url}" class="img">
+                                    </a>
+                                <%/foreach%>
+                            <%/if%>
+                        </td>
+                        <td align="center">{dr[accept_name]}</td>
+                        <td align="center"><strong>￥{dr[order_amount]}</strong><br /><%=get_payment_title({strtoint({dr[payment_id]})})%></td>
+                        <td align="center">{dr[add_time]}</td>
+                        <td align="center">
+                            <%=get_order_status({strtoint({dr[id]})})%>
+                        </td>
+                        <td align="center">
+                            <a href="<%linkurl("userorder_show",{dr[id]})%>">查看订单</a><br />
+                            <%if(get_order_payment_status({strtoint({dr[id]})}))%>
+                                <a href="<%linkurl("payment","?action=confirm&order_no="+{dr[order_no]})%>">去付款</a> |
+                            <%/if%>
+                            <%if({strtoint({dr[status]})}<2)%>
+                                <a href="javascript:;" onclick="clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=order_cancel&order_no={dr[order_no]}');">取消</a>
+                            <%/if%>
+                        </td>
+                    </tr>
+                    <%/foreach%>
+                    <%if(list.Rows.Count==0)%>
+                    <tr><td colspan="8" align="center">暂无记录...</td></tr>
+                    <%/if%>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                </div>
+            </div>
+            <!--/交易订单-->
+            
+            <%else if(action=="close")%>
+            <!--已关闭订单-->
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li>
+                        <a href="<%linkurl("userorder","list")%>">交易订单</a>
+                    </li>
+                    <li class="selected">
+                        <a href="<%linkurl("userorder","close")%>">已关闭订单</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ftable">
+                    <tr>
+                        <th width="16%" align="left">订单号</th>
+                        <th align="left">订单商品</th>
+                        <th width="10%">姓名</th>
+                        <th width="12%">订单金额</th>
+                        <th width="11%">下单时间</th>
+                        <th width="10%">状态</th>
+                        <th width="12%">操作</th>
+                    </tr>
+                    <%set DataTable list=get_order_list(10, page, "user_id="+userModel.id+" and status>3", out totalcount)%> <!--取得一个DataTable-->
+                    <%set string pagelist=get_page_link(10, page, totalcount, "userorder", action, "__id__")%> <!--取得分页页码列表-->
+                    <%foreach(DataRow dr in list.Rows)%>
+                    <tr>
+                        <td>{dr[order_no]}</td>
+                        <td>
+                            <%set List<DTcms.Model.article> ls=get_order_goods_list({strtoint({dr[id]})})%>
+                            <%if(ls!=null)%>
+                                <%foreach(DTcms.Model.article modelt in ls)%>
+                                    <a target="_blank" title="{modelt.title}" href="<%linkurl("goods_show",{modelt.id})%>">
+                                        <img width="60" height="60" alt="{modelt.title}" src="{modelt.img_url}" class="img">
+                                    </a>
+                                <%/foreach%>
+                            <%/if%>
+                        </td>
+                        <td align="center">{dr[accept_name]}</td>
+                        <td align="center"><strong>￥{dr[order_amount]}</strong><br /><%=get_payment_title({strtoint({dr[payment_id]})})%></td>
+                        <td align="center">{dr[add_time]}</td>
+                        <td align="center">
+                            <%=get_order_status({strtoint({dr[id]})})%>
+                        </td>
+                        <td align="center">
+                            <a href="<%linkurl("userorder_show",{dr[id]})%>">查看订单</a><br />
+                        </td>
+                    </tr>
+                    <%/foreach%>
+                    <%if(list.Rows.Count==0)%>
+                    <tr><td colspan="8" align="center">暂无记录...</td></tr>
+                    <%/if%>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                </div>
+            </div>
+            <!--已关闭订单-->
+            <%/if%>
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

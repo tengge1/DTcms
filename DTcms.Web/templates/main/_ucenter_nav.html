@@ -1,0 +1,82 @@
+﻿    <div class="left-260">
+        <div class="bg-wrap">
+            <div class="avatar-box">
+                <a class="img-box" href="<%linkurl("usercenter","avatar")%>">
+                <%if(userModel.avatar!="")%>
+                    <img src="{userModel.avatar}" />
+                <%else%>
+                    <i class="iconfont icon-user-full"></i>
+                <%/if%>
+                </a>
+                <h3>
+                <%if({userModel.nick_name}!="")%>
+                    {userModel.nick_name}
+                <%else%>
+                    {userModel.user_name}
+                <%/if%>
+                </h3>
+                <p><b>{groupModel.title}</b></p>
+            </div>
+            
+            <div class="center-nav">
+                <ul>
+                    <li>
+                        <h2>
+                            <i class="iconfont icon-order"></i>
+                            <span>订单管理</span>
+                        </h2>
+                        <div class="list">
+                            <p><a href="<%linkurl("userorder","list")%>"><i class="iconfont icon-arrow-right"></i>交易订单</a></p>
+                            <p><a href="<%linkurl("userorder","close")%>"><i class="iconfont icon-arrow-right"></i>失效订单</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>
+                            <i class="iconfont icon-amount"></i>
+                            <span>余额管理</span>
+                        </h2>
+                        <div class="list">
+                            <p><a href="<%linkurl("useramount","recharge")%>"><i class="iconfont icon-arrow-right"></i>账户充值</a></p>
+                            <p><a href="<%linkurl("useramount","log")%>"><i class="iconfont icon-arrow-right"></i>充值记录</a></p>
+                            <p><a href="<%linkurl("useramount","list")%>"><i class="iconfont icon-arrow-right"></i>收支明细</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>
+                            <i class="iconfont icon-point"></i>
+                            <span>积分管理</span>
+                        </h2>
+                        <div class="list">
+                            <p><a href="<%linkurl("userpoint","convert")%>"><i class="iconfont icon-arrow-right"></i>积分兑换</a></p>
+                            <p><a href="<%linkurl("userpoint","list")%>"><i class="iconfont icon-arrow-right"></i>积分明细</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>
+                            <i class="iconfont icon-comment"></i>
+                            <span>站内消息</span>
+                        </h2>
+                        <div class="list">
+                            <p><a href="<%linkurl("usermessage","system")%>"><i class="iconfont icon-arrow-right"></i>系统消息</a></p>
+                            <p><a href="<%linkurl("usermessage","accept")%>"><i class="iconfont icon-arrow-right"></i>收件箱</a></p>
+                            <p><a href="<%linkurl("usermessage","send")%>"><i class="iconfont icon-arrow-right"></i>发件箱</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <h2>
+                            <i class="iconfont icon-user"></i>
+                            <span>账户管理</span>
+                        </h2>
+                        <div class="list">
+                            <p><a href="<%linkurl("usercenter","invite")%>"><i class="iconfont icon-arrow-right"></i>邀请注册</a></p>
+                            <p><a href="<%linkurl("usercenter","proinfo")%>"><i class="iconfont icon-arrow-right"></i>账户资料</a></p>
+                            <p><a href="<%linkurl("usercenter","avatar")%>"><i class="iconfont icon-arrow-right"></i>头像设置</a></p>
+                            <p><a href="<%linkurl("usercenter","password")%>"><i class="iconfont icon-arrow-right"></i>修改密码</a></p>
+                            <p><a href="<%linkurl("usercenter","exit")%>"><i class="iconfont icon-arrow-right"></i>退出登录</a></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+                
+        </div>
+    </div>

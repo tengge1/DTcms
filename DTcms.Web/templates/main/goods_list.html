@@ -1,0 +1,104 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{model.title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="goods">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<%set string category_nav=get_category_menu("goods_list", category_id)%>
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("goods")%>">购物商城</a>
+        {category_nav}
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--/分类导航-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <div class="screen-box">
+            <!--分类-->
+            <dl>
+                <dt>分类：</dt>
+                <dd>
+                <%if(category_id==0)%>
+                    <a class="selected" href="<%linkurl("goods_list",0)%>">全部</a>
+                <%else%>
+                    <a href="<%linkurl("goods_list",0)%>">全部</a>
+                <%/if%>
+                <%set DataTable categoryList=get_category_child_list(channel,0)%>
+                <%foreach(DataRow cdr in categoryList.Rows)%>
+                    <%if(category_id=={strtoint({cdr[id]})})%>
+                        <a class="selected" href="<%linkurl("goods_list",{cdr[id]})%>">{cdr[title]}</a>
+                    <%else%>
+                        <a href="<%linkurl("goods_list",{cdr[id]})%>">{cdr[title]}</a>
+                    <%/if%>
+                <%/foreach%>
+                </dd>
+            </dl>
+            <!--/分类-->
+        </div>
+    
+    </div>
+</div>
+<!--/分类导航-->
+
+<!--商品列表-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <ul class="img-list">
+        <!--取得一个分页DataTable-->
+        <%set DataTable goodsList=get_article_list(channel, category_id, pagesize, page, "status=0", out totalcount, out pagelist, "goods_list", category_id, "__id__")%>
+        <%foreach(DataRow dr in goodsList.Rows)%>
+            <li>
+                <a href="<%linkurl("goods_show",{dr[id]})%>">
+                    <div class="img-box">
+                        <%if({dr[is_red]}=="1")%>
+                            <div class="abs-txt">推荐</div>
+                        <%/if%>
+                        <img src="{dr[img_url]}" />
+                    </div>
+                    <div class="info">
+                        <h3>{dr[title]}</h3>
+                        <p class="price"><b>¥{dr[sell_price]}</b>元</p>
+                        <p>
+                            <strong>库存 {dr[stock_quantity]}</strong>
+                            <span>市场价：<s>{dr[market_price]}</s></span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        <%/foreach%>
+        </ul>
+        
+        <!--页码列表-->
+        <div class="page-box" style="margin:15px 0 0;">
+            <div class="digg">{pagelist}</div>
+        </div>
+        <!--/页码列表-->
+    </div>
+
+</div>
+<!--/商品列表-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

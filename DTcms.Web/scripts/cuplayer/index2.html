@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta charset="utf-8">
+<title>酷播视频点播方案X1(跨平台多终端适配)</title>
+<link rel="stylesheet" type="text/css" href="images/common.css"/>
+<style type="text/css">
+body { width:100%; margin:0 auto;}
+</style> 
+
+<script type="text/javascript" src="js/jquery172.js"></script>
+<script type="text/javascript" src="js/action.js"></script>
+</head>
+
+<body>
+<!--header/begin-->
+<div id="header">
+<div class="logo"><a href="index.html"><img src="images/logoCu.jpg" ></a></div>
+<div class="info"><a href="#"><img src="images/search.jpg" ></a></div>
+<div class="other"><a href="index.html">返回首页</a></div>
+</div>
+<!--header/end-->
+
+<!--content/begin-->
+<div id="content" >
+ 
+<!--Main B-->
+  <div class="main">
+  <h2>跨平台适配方案（视频点播）：</h2>
+<!--maincontent/begin-->
+<div class="maincontent2">
+<fieldset>
+<legend><h4>跨平台方案X1</h4></legend>
+<h4>（基于普通HTTP协议）</h4>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="demoX1.html" target="_blank" class="demo">实例演示 X1-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端</strong><span class="info"><b class="">Http</b> + Flash + Mp4</span></li>
+<li><strong>安卓端,苹果端,WP</strong><span class="info"><b class="">Http</b> + Html5 + Mp4</span></li>
+</ul>
+</div>
+<div class="pIntro" ><strong>方案X1说明：</strong>本实例基于HTTP协议，是应用最广泛的实例。<br />
+1.基于HTTP协议(比如IIS, <a href="http://www.cuplayer.com/player/PlayerCode/Nginx/" target="_blank" class="cRed2">Apache</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Nginx/" target="_blank" class="cRed2">Nginx</a> 等网站环境下的http协议都可以正常使用本方案)<br />
+2.注意:视频文件必须是标准MP4视频(H264+aac)<br />
+3.注意:确认服务器是否支持MP4视频的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cRed2">参考链接&gt;&gt;</a></div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+<!--maincontent/begin-->
+<div class="maincontent">
+<fieldset>
+<legend><h4>跨平台方案X2</h4></legend>
+<h4>（基于普通HTTP协议+ RTMP协议）</h4>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="demoX2.html" target="_blank" class="demo">实例演示 X2-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端</strong><span class="info"><b class="cBlue2">RTMP</b> + Flash + Mp4</span></li>
+<li><strong>安卓端,苹果端,WP</strong><span class="info"><b class="">Http</b> + Html5 + Mp4</span></li>
+</ul>
+</div>
+<div class="pIntro" ><strong>方案X1说明：</strong>本实例基于HTTP协议+RTMP协议。<br />
+  1.本实例要求服务器端必须有装 <a href="http://www.cuplayer.com/player/PlayerCode/SRS/"  target="_blank" class="cRed2">SRS</a>, <a href="http://www.cuplayer.com/player/PlayerCode/Crtmpserver/"  target="_blank" class="cRed2">crtmpserver</a>, <a href="http://www.cuplayer.com/player/PlayerCode/FMS/" target="_blank" class="cRed2">FMS</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Red5/" target="_blank" class="cRed2">RED5</a> 等流媒体软件做支持<br />
+2.注意:视频文件必须是标准MP4视频(H264+aac)</div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+<!--maincontent/begin-->
+<div class="maincontent">
+<fieldset>
+<legend><h4>跨平台方案X3</h4></legend>
+<h4>（基于普通HTTP协议+ RTMP协议）</h4>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="demoX3.html" target="_blank" class="demo">实例演示 X3-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端,安卓端</strong><span class="info"><b class="cBlue2">RTMP</b> + Flash + Mp4</span></li>
+<li><strong>苹果端,WP</strong><span class="info"><b class="">Http</b> + Html5 + Mp4</span></li>
+</ul>
+</div>
+<div class="pIntro" >
+  <p><strong>方案X3说明：</strong>本实例基于HTTP协议+RTMP协议。<br />
+    1.本实例要求服务器端必须有装 <a href="http://www.cuplayer.com/player/PlayerCode/SRS/"  target="_blank" class="cRed2">SRS</a>, <a href="http://www.cuplayer.com/player/PlayerCode/Crtmpserver/"  target="_blank" class="cRed2">crtmpserver</a>, <a href="http://www.cuplayer.com/player/PlayerCode/FMS/" target="_blank" class="cRed2">FMS</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Red5/" target="_blank" class="cRed2">RED5</a> 等流媒体软件做支持<br />
+    2.注意:视频文件必须是标准MP4视频(H264+aac)</p>
+  <p>3.注意: 安卓端，请先<a href="http://shouji.baidu.com/software/item?docid=5687604&amp;from=as" target="_blank"  class="cRed2">安装flash插件</a></p>
+</div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+
+<!--maincontent/begin-->
+<div class="maincontent">
+<fieldset>
+<legend>
+<h4>跨平台方案X4</h4>
+</legend>
+<h4>（基于HTTP协议 + RTMP协议 + HLS）</h4>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="demoX4.html" target="_blank" class="demo">实例演示 X4-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端</strong><span class="info"><b class="cBlue2">RTMP</b> + Flash + Mp4</span></li>
+<li><strong>安卓端,WP</strong><span class="info"><b class="">Http</b> + Html5 + Mp4</span></li>
+<li><strong>苹果端</strong><span class="info"><b class="">Http</b> + Html5 + m3u8</span></li>
+</ul>
+</div>
+<div class="pIntro" ><strong>方案X4说明：</strong>本实例基于HTTP协议+RTMP协议+HLS。<br />
+  1.本实例要求服务器端必须有装 <a href="http://www.cuplayer.com/player/PlayerCode/SRS/"  target="_blank" class="cRed2">SRS</a>, <a href="http://www.cuplayer.com/player/PlayerCode/Crtmpserver/"  target="_blank" class="cRed2">crtmpserver</a>, <a href="http://www.cuplayer.com/player/PlayerCode/FMS/" target="_blank" class="cRed2">FMS</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Red5/" target="_blank" class="cRed2">RED5</a> 等流媒体软件做支持<br />
+2.注意:视频文件必须是标准MP4视频(H264+aac)</div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+ 
+
+
+
+  </div>
+  <!--Main E-->
+<!--Main B-->
+  <div class="main">
+  <h2>跨平台适配方案（视频直播）：</h2>
+<!--maincontent/begin-->
+<div class="maincontent">
+<fieldset>
+<legend>
+<h4>跨平台方案L1<span class="cGray">（基于HTTP协议 + RTMP协议 + HLS）</span></h4>
+</legend>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="LiveL1.html" target="_blank" class="demo">实例演示 L1-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端,安卓端,WP</strong><span class="info"><b class="cBlue2">RTMP</b> + Flash + Live</span></li>
+<li><strong>苹果端</strong><span class="info"><b class="">Http</b> + Html5 + HLS(m3u8)</span></li>
+</ul>
+</div>
+<div class="pIntro" >
+  <p><strong>方案L1说明：</strong>本实例基于HTTP协议+RTMP协议+HLS。<br />
+    1.本实例要求服务器端必须有装 <a href="http://www.cuplayer.com/player/PlayerCode/SRS/"  target="_blank" class="cRed2">SRS</a>, <a href="http://www.cuplayer.com/player/PlayerCode/Crtmpserver/"  target="_blank" class="cRed2">crtmpserver</a>, <a href="http://www.cuplayer.com/player/PlayerCode/FMS/" target="_blank" class="cRed2">FMS</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Red5/" target="_blank" class="cRed2">RED5</a> 等流媒体软件做支持<br />
+    2.注意:视频文件必须是标准MP4视频(H264+aac)<br />
+    3.注意: 安卓端，请先<a href="http://shouji.baidu.com/software/item?docid=5687604&amp;from=as" target="_blank"  class="cRed2">安装flash插件</a></p>
+  <p>4.注意: 须实现M3u8切片</p>
+</div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+
+<!--maincontent/begin-->
+<div class="maincontent">
+<fieldset>
+<legend>
+<h4>跨平台方案L2<span class="cGray">（基于HTTP协议 + RTMP协议 + HLS）</span></h4>
+</legend>
+<div class="pLink" >
+<ul class="demo">
+<li><a href="LiveL2.html" target="_blank" class="demo">实例演示 L2-1</a></li>
+</ul>
+<ul class="intro">
+<li><strong>PC端</strong><span class="info"><b class="cBlue2">RTMP</b> + Flash + Live</span></li>
+<li><strong>苹果端,安卓端,WP</strong><span class="info"><b class="">Http</b> + Html5 + HLS(m3u8)</span></li>
+</ul>
+</div>
+<div class="pIntro" >
+  <p><strong>方案L2说明：</strong>本实例基于HTTP协议+RTMP协议+HLS。<br />
+    1.本实例要求服务器端必须有装 <a href="http://www.cuplayer.com/player/PlayerCode/SRS/"  target="_blank" class="cRed2">SRS</a>, <a href="http://www.cuplayer.com/player/PlayerCode/Crtmpserver/"  target="_blank" class="cRed2">crtmpserver</a>, <a href="http://www.cuplayer.com/player/PlayerCode/FMS/" target="_blank" class="cRed2">FMS</a> , <a href="http://www.cuplayer.com/player/PlayerCode/Red5/" target="_blank" class="cRed2">RED5</a> 等流媒体软件做支持<br />
+    2.注意:视频文件必须是标准MP4视频(H264+aac)</p>
+  <p>3.注意: 须实现M3u8切片</p>
+</div>
+</fieldset>
+</div>
+<!--maincontent/end-->
+  </div>
+  <!--Main E-->
+ 
+
+<div class="clear"></div>
+<h3><span>使用提示说明</span></h3>
+<!-- help/Bgein -->
+<div class="help">
+<div class="code" align="center">
+<p >手机端扫描以下二维码直接观看</p>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+var myURL = document.location.href; 
+document.writeln("<p id=\"jiathis_webchat\"><img alt=\"二维码加载中...\" style=\"margin-top: 15px;\" src=\"http://s.jiathis.com/qrcode.php?url=" + myURL + "\" height=\"240\" width=\"240\"><p class=\"open\">手机扫一扫 直接打开观看视频<br/>（支持安卓Android/苹果iOS/微信）</p></p>");
+//-->
+</SCRIPT> 
+</div>
+<p>
+        <strong>播放器使用环境及注意事项：</strong><br />
+        *  强烈建议使用<strong>酷播云端播放器</strong>（永久免费 /  支持视频数据统计分析），<a href="http://www.cuplayer.com/Cloud" target="_blank">马上使用&gt;&gt;</a><br />
+        *  请用户在IIS,Apache等web网站环境下使用；<br />
+        *  请确认您的环境是否支持支持flv,mp4等视频文件的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  播放器在使用过程中，支持加载XML(asp,php,jsp,aspx)等格式配置文件；<br />
+        * 请确认播放器相关的文件地址是否正确。 <br />
+        <strong>遇到问题如何获得帮助：</strong>        <br />
+        * 官方应用文档：<a href="http://www.cuplayer.com/CuPlayer/help/index.html" target="_blank" class="cOrange"><br>
+        http://v3.cuplayer.comhelp/</a> <br />
+        * 官方客服：QQ / <strong class="cRed2">261532593</strong> (验证请注明&ldquo;酷播&rdquo;字样)  <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=261532593&site=qq&menu=yes"><img src="http://wpa.qq.com/pa?p=2:261532593:41" alt="酷播网页播放器官方客服欢迎咨询" title="酷播网页播放器官方客服欢迎咨询" align="absmiddle" border="0" /></a><br />
+  <strong>极酷阳光播放器官方网站：</strong> <a href="http://v3.cuplayer.comindex.html" target="_blank" class="cOrange">http://v3.cuplayer.com</a></p>
+  
+</div>
+<!-- help/End -->
+<div style="display:none;">
+<script type="text/javascript" src="http://www.cuplayer.com/CuPlayer/js/stat.js"></script>
+</div>
+
+
+ 
+
+</div>
+<!--content/end-->
+
+
+
+<div class="clear"></div>
+<!--footer/begin-->  
+<div id="footer">
+	<div class="left-part">
+		<a href="http://www.cuplayer.com/" class="logo02"><img src="images/logoMini.jpg"></a><em>|</em><a href="http://www.cuplayer.com/CrossPlatform">返回首页>></a>
+	</div>
+	<div class="right-part">
+     <a href="http://v3.cuplayer.comdownload.html">实例下载</a>
+	</div>       
+</div>
+<!--footer/end-->
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>会员中心 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("usercenter","index")%>">会员中心</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--页面左边-->
+    <%template src="_ucenter_nav.html"%>
+    <!--/页面左边-->
+    
+    <!--页面左边-->
+    <div class="right-auto">
+        <div class="bg-wrap" style="min-height:765px;">
+            
+            <%if(action=="index")%>
+            <!--会员中心-->
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">个人中心</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="center-head clearfix">
+                <div class="img-box">
+                <%if(userModel.avatar!="")%>
+                    <img src="{userModel.avatar}" />
+                <%else%>
+                    <i class="iconfont icon-user-full"></i>
+                <%/if%>
+                </div>
+                <div class="list-box">
+                    <h3>欢迎您~ {userModel.user_name}</h3>
+                    <ul>
+                        <li>组别：{groupModel.title}</li>
+                        <li>账户余额：￥{userModel.amount}</li>
+                        <li><p><a href="#">消费记录</a></p></li>
+                        <li>账户成长值：{userModel.exp}</li>
+                        <li>账户积分：{userModel.point}</li>
+                        <li><p><a class="link-btn" href="<%linkurl("useramount","recharge")%>">立即充值</a></p></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="center-info clearfix">
+                <ul>
+                    <li>本次登录IP：{curr_login_ip}</li>
+                    <li>上次登录IP：{pre_login_ip}</li>
+                    <li>注册时间：{userModel.reg_time}</li>
+                    <li>上次登录时间：{pre_login_time}</li>
+                </ul>
+            </div>
+            
+            <div class="center-tit">
+                <span><a href="<%linkurl("userorder","list")%>">更多..</a></span>
+                <h3><i class="iconfont icon-order"></i>我的订单</h3>
+            </div>
+            <div class="center-info clearfix">
+                <ul>
+                    <li>已完成订单：<%=get_user_order_count("status=3 and user_id="+userModel.id)%>个</li>
+                    <li>待完成订单：<%=get_user_order_count("status<3 and user_id="+userModel.id)%>个</li>
+                </ul>
+            </div>
+            <div class="center-tit">
+                <span><a href="<%linkurl("usermessage","accept")%>">更多..</a></span>
+                <h3><i class="iconfont icon-comment"></i>站内消息</h3>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" class="mtable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <%set DataTable messageList=get_user_message_list(10, "accept_user_name='"+userModel.user_name+"' and (type=1 or type=2)")%>
+                <%foreach(DataRow dr in messageList.Rows)%>
+                    <tr>
+                        <td><a href="<%linkurl("usermessage_show",{dr[id]})%>">{dr[title]}</a> (发件人：{dr[post_user_name]})</td>
+                        <td width="80">
+                        <%if({dr[is_read]}=="1")%>
+                            已读
+                        <%else%>
+                            未读
+                        <%/if%>
+                        </td>
+                        <td width="150">{dr[post_time]}</td>
+                    </tr>
+                <%/foreach%>
+                <%if(messageList.Rows.Count==0)%>
+                    <tr><td align="center">暂无短消息...</td></tr>
+                <%/if%>
+                </tbody>
+                </table>
+            </div>
+            <!--会员中心-->
+        
+            <%else if(action=="password")%>
+            <!--修改密码-->
+            <link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+            <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+            <script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+            <script type="text/javascript">
+            $(function(){
+                //初始化表单
+                AjaxInitForm('#pwdForm', '#btnSubmit', 1);
+            });
+            </script>
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usercenter","index")%>"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">修改密码</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <form name="pwdForm" id="pwdForm" url="{config.webpath}tools/submit_ajax.ashx?action=user_password_edit">
+                <div class="form-box">
+                    <dl class="form-group">
+                        <dt>用户名：</dt>
+                        <dd>{userModel.user_name}</dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>旧密码：</dt>
+                        <dd>
+                            <input name="txtOldPassword" id="txtOldPassword" type="password" class="input" datatype="*6-20" nullmsg="请输入旧密码" errormsg="密码范围在6-20位之间" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>新密码：</dt>
+                        <dd>
+                            <input name="txtPassword" id="txtPassword" type="password" class="input" datatype="*6-20" nullmsg="请输入新密码" errormsg="密码范围在6-20位之间" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>确认新密码：</dt>
+                        <dd>
+                            <input name="txtPassword1" id="txtPassword1" type="password" class="input" datatype="*" recheck="txtPassword" nullmsg="请再输入一次新密码" errormsg="两次输入的密码不一致" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="确认修改" class="submit" />
+                        </dd>
+                    </dl>
+                </div>
+            </form>
+            <!--/修改密码-->
+            
+            <%else if(action=="proinfo")%>
+            <!--修改资料-->
+            <link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/PCASClass.js"></script>
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/datepicker/WdatePicker.js"></script>
+            <script type="text/javascript">
+            $(function(){
+                //初始化表单
+                AjaxInitForm('#infoForm', '#btnSubmit', 1);
+                //初始化地区
+                var mypcas = new PCAS("txtProvince,所属省份", "txtCity,所属城市", "txtArea,所属地区");
+                var areaArr = ("{userModel.area}").split(",");
+                if (areaArr.length == 3) {
+                  mypcas.SetValue(areaArr[0], areaArr[1], areaArr[2]);
+                }
+            });
+            </script>
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usercenter","index")%>"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">账户资料</a>
+                    </li>
+                </ul>
+            </div>
+            <form name="infoForm" id="infoForm" url="{config.webpath}tools/submit_ajax.ashx?action=user_info_edit">
+                <div class="form-box">
+                    <dl class="form-group">
+                        <dt>用户名：</dt>
+                        <dd>
+                            {userModel.user_name}
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>昵称：</dt>
+                        <dd>
+                            <input name="txtNickName" id="txtNickName" type="text" class="input" value="{userModel.nick_name}" datatype="*" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>性别：</dt>
+                        <dd>
+                        <%if({userModel.sex}=="男")%>
+                            <label class="mart"><input name="rblSex" type="radio" value="男" checked="checked" />男</label> 
+                            <label class="mart"><input name="rblSex" type="radio" value="女" />女</label>
+                            <label class="mart"><input name="rblSex" type="radio" value="保密" datatype="*" sucmsg=" " />保密</label>
+                        <%else if({userModel.sex}=="女")%>
+                            <label class="mart"><input name="rblSex" type="radio" value="男" />男</label> 
+                            <label class="mart"><input name="rblSex" type="radio" value="女" checked="checked" />女</label>
+                            <label class="mart"><input name="rblSex" type="radio" value="保密" datatype="*" sucmsg=" " />保密</label>
+                        <%else%>
+                            <label class="mart"><input name="rblSex" type="radio" value="男" />男</label> 
+                            <label class="mart"><input name="rblSex" type="radio" value="女" />女</label>
+                            <label class="mart"><input name="rblSex" type="radio" value="保密" checked="checked" datatype="*" sucmsg=" " />保密</label>
+                        <%/if%>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>生日：</dt>
+                        <dd>
+                        <%if({userModel.birthday}==null)%>
+                            <input name="txtBirthday" id="txtBirthday" type="text" class="input" maxlength="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" />
+                        <%else%>
+                            <input name="txtBirthday" id="txtBirthday" type="text" class="input" maxlength="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'});" value="<%datetostr({userModel.birthday},yyyy-M-d)%>" />
+                        <%/if%>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>邮箱：</dt>
+                        <dd>
+                            <input name="txtEmail" id="txtEmail" type="text" class="input" value="{userModel.email}" datatype="e" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>手机：</dt>
+                        <dd>
+                            <input name="txtMobile" id="txtMobile" type="text" class="input" value="{userModel.mobile}" datatype="m" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>电话：</dt>
+                        <dd>
+                            <input name="txtTelphone" id="txtTelphone" type="text" class="input" maxlength="30" value="{userModel.telphone}" />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>所属地区：</dt>
+                        <dd>
+                            <select id="txtProvince" name="txtProvince" class="select"></select>
+                            <select id="txtCity" name="txtCity" class="select"></select>
+                            <select id="txtArea" name="txtArea" class="select" datatype="*" sucmsg=" "></select>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>详细地址：</dt>
+                        <dd>
+                            <input name="txtAddress" id="txtAddress" type="text" class="input" maxlength="250" value="{userModel.address}" />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>在线QQ：</dt>
+                        <dd>
+                            <input name="txtQQ" id="txtQQ" type="text" class="input" maxlength="20" value="{userModel.qq}" />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>MSN账户：</dt>
+                        <dd>
+                            <input name="txtMsn" id="txtMsn" type="text" class="input" maxlength="20" value="{userModel.msn}" />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="确认修改" class="submit" />
+                        </dd>
+                    </dl>
+                 </div>
+            </form>
+            <!--/修改资料-->
+            
+            <%else if(action=="avatar")%>
+            <link rel="stylesheet" type="text/css" href="{config.webpath}css/jquery.jcrop.css" />
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/webuploader/webuploader.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.jcrop.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/avatar.js"></script>
+            <script type="text/javascript">
+            $(function(){
+                initWebUploader('{config.webpath}');
+            });
+            </script>
+            <!--设置头像-->
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usercenter","index")%>"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">设置头像</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-box">
+                <div id="upload-box" class="upload-box"></div>
+                <div class="cropper-wrap">
+                    <div class="cropper-box">
+                        <img id="target" src="<%templateskin%>/images/avatar-bg.png" width="350" height="350" />
+                    </div>
+                    <div class="cropper-view">
+                        <div class="img-box">
+                            <%if(userModel.avatar!="")%>
+                              <img id="preview" src="{userModel.avatar}" />
+                            <%else%>
+                              <img id="preview" src="<%templateskin%>/images/user-avatar.png" />
+                            <%/if%>
+                            <span>头像预览</span>
+                        </div>
+                        <div class="btn-box">
+                            <p><strong>头像预览区</strong></p>
+                            <p><input name="btnSubmit" type="button" class="btn" value="确定保存" onclick="CropSubmit(this);" /></p>
+                            <p class="tip">提示：生成头像大小180*180相素上传图片后，左侧选取图片合适大小，点击下面的保存按钮。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="uploadForm" name="uploadForm" url="{config.webpath}tools/submit_ajax.ashx?action=user_avatar_crop">
+                <input id="hideFileName" name="hideFileName" type="hidden" />
+                <input id="hideX1" name="hideX1" type="hidden" value="0" />
+                <input id="hideY1" name="hideY1" type="hidden" value="0" />
+                <input id="hideWidth" name="hideWidth" type="hidden" value="0" />
+                <input id="hideHeight" name="hideHeight" type="hidden" value="0" />
+            </form>
+            <!--/设置头像-->
+            
+            <%else if(action=="invite")%>
+            <!--邀请码-->
+            <div class="sub-tit">
+                <a class="add" href="javascript:;" onclick="clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=user_invite_code');">
+                    <i class="fa fa-reply"></i>申请邀请码
+                </a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">我的邀请码</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-wrap">
+                <div class="msg-box">
+                    <i class="iconfont icon-tip"></i>
+                    <p>您购买的邀请码会在失效之后由系统定时清理，不会长期驻留在列表中。</p>
+                </div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ftable">
+                    <tr>
+                        <th align="left">邀请码</th>
+                        <th width="150">申请时间</th>
+                        <th width="150">过期时间</th>
+                        <th width="80">已使用次数</th>
+                        <th width="80">状态</th>
+                    </tr>
+                    <%set DataTable inviteList=get_user_invite_list(0, "user_name='"+userModel.user_name+"'")%>
+                    <%foreach(DataRow dr in inviteList.Rows)%>
+                    <tr>
+                        <td>
+                            {dr[str_code]} &nbsp; 
+                            <a href="javascript:;" onclick="copyText('邀请码：{dr[str_code]}');">[复制]</a>
+                        </td>
+                        <td align="center">{dr[add_time]}</td>
+                        <td align="center">
+                            {dr[eff_time]}
+                        </td>
+                        <td align="center">{dr[count]}</td>
+                        <td align="center">
+                            <%if(get_invite_status({dr[str_code]}))%>
+                                有效
+                            <%else%>
+                                已失效
+                            <%/if%>
+                        </td>
+                    </tr>
+                    <%/foreach%>
+                    <%if(inviteList.Rows.Count==0)%>
+                        <tr><td colspan="8" align="center">暂无邀请码...</td></tr>
+                    <%/if%>
+                </table>
+            </div>
+            <!--/邀请码-->
+            <%/if%>
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

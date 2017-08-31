@@ -1,0 +1,308 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>确认订单 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/PCASClass.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/cart.js"></script>
+<script type="text/javascript">
+$(function(){
+	//初始化收货地址
+	initUserAddress("#userAddress");
+	//初始化表单
+	AjaxInitForm('#orderForm', '#btnSubmit', 0);
+});
+</script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("cart")%>">购物车</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--页面内容-->
+<div class="section">
+    <div class="wrapper">
+        <div class="bg-wrap">
+            <!--购物车头部-->
+            <div class="cart-head clearfix">
+                <h2><i class="iconfont icon-cart"></i>我的购物车</h2>
+                <div class="cart-setp">
+                    <ul>
+                        <li class="first active">
+                            <div class="progress">
+                                <span>1</span>
+                                放进购物车
+                            </div>
+                        </li>
+                        <li class="active">
+                            <div class="progress">
+                                <span>2</span>
+                                填写订单信息
+                            </div>
+                        </li>
+                        <li class="last">
+                            <div class="progress">
+                                <span>3</span>
+                                支付/确认订单
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--购物车头部-->
+            
+            <div class="cart-box">
+                <h2 class="slide-tit">
+                    <span>1、收货地址</span>
+                </h2>
+                
+                <form id="orderForm" name="orderForm" url="{config.webpath}tools/submit_ajax.ashx?action=order_save&site_id={site.id}">
+                <div class="form-box address-info">
+                    <dl class="form-group">
+                        <dt>收货人姓名：</dt>
+                        <dd>
+                            <input name="book_id" id="book_id" type="hidden" value="0" />
+                            <input name="accept_name" id="accept_name" type="text" class="input" value="" datatype="s2-20" sucmsg=" " />
+                            <span class="Validform_checktip">*收货人姓名</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>所属地区：</dt>
+                        <dd>
+                            <select id="province" name="province" class="select"></select>
+                            <select id="city" name="city" class="select"></select>
+                            <select id="area" name="area" class="select" datatype="*" sucmsg=" "></select>
+                            <span class="Validform_checktip">*请选择您所在的地区</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>详细地址：</dt>
+                        <dd>
+                            <input name="address" id="address" type="text" class="input" value="" datatype="*2-100" sucmsg=" " />
+                            <span class="Validform_checktip">*除上面所属地区外的详细地址</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>手机号码：</dt>
+                        <dd>
+                            <input name="mobile" id="mobile" type="text" class="input" value="" datatype="m" sucmsg=" " />
+                            <span class="Validform_checktip">*收货人的手机号码</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>联系电话：</dt>
+                        <dd>
+                            <input name="telphone" id="telphone" type="text" class="input" value="" />
+                            <span class="Validform_checktip">收货人的联系电话，非必填</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>电子邮箱：</dt>
+                        <dd>
+                            <input name="email" id="email" type="text" class="input" value="" />
+                            <span class="Validform_checktip">方便通知订单状态，非必填</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>邮政编码：</dt>
+                        <dd>
+                            <input name="post_code" id="post_code" type="txt" class="input code" />
+                            <span class="Validform_checktip">所在地区的邮政编码，非必填</span>
+                        </dd>
+                    </dl>
+                </div>
+                
+                <h2 class="slide-tit">
+                    <span>2、支付方式</span>
+                </h2>
+                <ul class="item-box clearfix">
+                    <%set DataTable paymentList=get_payment_list(0, "site_id="+site.id)%> <!--取得一个DataTable-->
+                    <%loop dr1 paymentList%>
+                        <%set (decimal){poundage_amount}=get_payment_poundage_amount({strtoint({dr1[id]})},goodsTotal.real_amount)%>
+                        <li>
+                            <label>
+                            <%if(dr1__loop__id==(paymentList.Rows.Count))%>
+                                <input name="payment_id" type="radio" onclick="paymentAmountTotal(this);" value="{dr1[id]}" datatype="*" sucmsg=" " />
+                                <input name="payment_price" type="hidden" value="{poundage_amount}" />{dr1[title]}
+                            <%else%>
+                                <input name="payment_id" type="radio" onclick="paymentAmountTotal(this);" value="{dr1[id]}" />
+                                <input name="payment_price" type="hidden" value="{poundage_amount}" />{dr1[title]}
+                            <%/if%>
+                                <em>手续费：{poundage_amount}元</em>
+                            </label>
+                        </li>
+                    <%/loop%>
+                </ul>
+                
+                <h2 class="slide-tit">
+                    <span>3、配送方式</span>
+                </h2>
+                <ul class="item-box clearfix">
+                    <%set DataTable expressList=get_express_list(0, "")%> <!--取得一个DataTable-->
+                    <%loop dr2 expressList%>
+                        <li>
+                            <label>
+                            <%if(dr2__loop__id==(expressList.Rows.Count))%>
+                                <input name="express_id" type="radio" onclick="freightAmountTotal(this);" value="{dr2[id]}" datatype="*" sucmsg=" " />
+                                <input name="express_price" type="hidden" value="{dr2[express_fee]}" />{dr2[title]}
+                            <%else%>
+                                <input name="express_id" type="radio" onclick="freightAmountTotal(this);" value="{dr2[id]}" />
+                                <input name="express_price" type="hidden" value="{dr2[express_fee]}" />{dr2[title]}
+                            <%/if%>
+                                <em>费用：{dr2[express_fee]}元</em>
+                            </label>
+                        </li>
+                    <%/loop%>
+                </ul>
+                
+                <h2 class="slide-tit">
+                    <span>4、商品清单</span>
+                </h2>
+                <div class="line15"></div>
+                <table width="100%" border="0" align="center" cellpadding="8" cellspacing="0" class="cart-table">
+                    <tr>
+                        <th colspan="2" align="left">商品信息</th>
+                        <th width="84" align="left">单价</th>
+                        <th width="84" align="left">优惠(元)</th>
+                        <th width="84" align="center">数量</th>
+                        <th width="104" align="left">金额(元)</th>
+                        <th width="84" align="left">积分</th>
+                        <th width="84" align="center">库存(件)</th>
+                    </tr>
+                    <%foreach(DTcms.Model.cart_items modelt in goodsList)%>
+                    <tr>
+                        <td width="68">
+                            <a target="_blank" href="<%linkurl("goods_show",{modelt.article_id})%>">
+                                <img src="{modelt.img_url}" class="img" />
+                            </a>
+                        </td>
+                        <td>
+                            <a target="_blank" href="<%linkurl("goods_show",{modelt.article_id})%>">{modelt.title}</a>
+                        </td>
+                        <td>
+                            <span class="red">
+                                ￥{modelt.user_price}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="red">
+                                ￥<%=(modelt.sell_price-modelt.user_price)%>
+                            </span>
+                        </td>
+                        <td align="center">{modelt.quantity}</td>
+                        <td>
+                            <span class="red">
+                                ￥<%=(modelt.user_price*modelt.quantity)%>
+                            </span>
+                        </td>
+                        <td>
+                            <%if(modelt.point>0)%>
+                                +
+                            <%/if%>
+                            <%=(modelt.point*modelt.quantity)%>
+                        </td>
+                        <td align="center">
+                            {modelt.stock_quantity}
+                        </td>
+                    </tr>
+                    <%/foreach%>
+                    
+                    <%if(goodsList.Count<1)%>
+                    <tr>
+                        <td colspan="8">
+                            <div class="msg-tips">
+                                <div class="icon warning"><i class="iconfont icon-tip"></i></div>
+                                <div class="info">
+                                    <strong>购物车没有商品！</strong>
+                                    <p>您的购物车为空，<a href="<%linkurl("index")%>">马上去购物</a>吧！</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <%/if%>
+                </table>
+                <div class="line15"></div>
+                
+                <h2 class="slide-tit">
+                    <span>5、结算信息</span>
+                </h2>
+                <div class="buy-foot clearfix">
+                    <div class="left-box">
+                        <dl>
+                            <dd>
+                                <label><input name="is_invoice" id="is_invoice" type="checkbox" value="1" onclick="taxAmoutTotal(this);" /> 是否开具发票</label>
+                                <input name="taxAmout" id="taxAmout" type="hidden" value="<%=get_order_taxamount(goodsTotal.real_amount)%>" />
+                            </dd>
+                        </dl>
+                        <dl id="invoiceBox" style="display:none;">
+                            <dt>发票抬头(100字符以内)</dt>
+                            <dd>
+                                <input name="invoice_title" id="invoice_title" type="text" class="input" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>订单备注(100字符以内)</dt>
+                            <dd>
+                                <textarea name="message" class="input" style="height:35px;"></textarea>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="right-box">
+                        <p>
+                            商品 <label class="price">{goodsTotal.total_quantity}</label> 件&nbsp;&nbsp;&nbsp;&nbsp;
+                            商品金额：￥<label id="goodsAmount" class="price">{goodsTotal.real_amount}</label> 元&nbsp;&nbsp;&nbsp;&nbsp;
+                            总积分：<label class="price">{goodsTotal.total_point}</label> 分
+                        </p>
+                        <p>
+                            运费：￥<label id="expressFee" class="price">0.00</label> 元 +
+                            支付手续费：￥<label id="paymentFee" class="price">0.00</label> 元 +
+                            税费：￥<label id="taxesFee" class="price">0.00</label> 元
+                        </p>
+                        <p class="txt-box">
+                            应付总金额：￥<label id="totalAmount" class="price">{goodsTotal.real_amount}</label>
+                        </p>
+                        <p class="btn-box">
+                            <a class="btn button" href="<%linkurl("cart")%>">返回购物车</a>
+                            <%if(goodsTotal.total_quantity>0)%>
+                                <input id="btnSubmit" name="btnSubmit" type="submit" value="确认提交" class="btn submit" />
+                            <%else%>
+                                <input id="btnSubmit" name="btnSubmit" type="button" value="确认提交" class="btn gray" disabled="disabled" />
+                            <%/if%>
+                        </p>
+                    </div>
+                </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!--/页面内容-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

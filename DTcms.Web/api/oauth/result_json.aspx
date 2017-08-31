@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="result_json.aspx.cs" Inherits="DTcms.Web.api.oauth.result_json" %>

@@ -1,0 +1,266 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>会员注册 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="javascript:;">会员注册</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--导航推荐-->
+<div class="section">
+    <div class="wrapper">
+        <div class="bg-wrap">
+            
+            <%if(action=="")%>
+            <!--会员注册-->
+            <link rel="stylesheet" href="{config.webpath}css/validate.css" />
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+            <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/register-validate.js"></script>
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">会员注册</a>
+                <i>|</i>
+                <a href="<%linkurl("login")%>">账户登录</a>
+            </div>
+            <form id="regform" name="regform" url="{config.webpath}tools/submit_ajax.ashx?action=user_register&site_id={site.id}">
+                <div class="form-box full">
+                    <dl class="form-group">
+                        <dt>用 户 名：</dt>
+                        <dd>
+                            <input id="txtUserName" name="txtUserName" type="text" class="input" placeholder="输入登录用户名" datatype="s3-50" nullmsg="请输入登录的用户名" sucmsg=" " ajaxurl="{config.webpath}tools/submit_ajax.ashx?action=validate_username" />
+                            <span class="Validform_checktip">请输入登录的用户名</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</dt>
+                        <dd>
+                            <input id="txtPassword" name="txtPassword" type="password" class="input" placeholder="输入登录密码" datatype="*6-20" nullmsg="请输入登录密码" errormsg="密码范围在6-20位之间" sucmsg=" " />
+                            <span class="Validform_checktip">请输入6-20位的登录密码</span>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>确认密码：</dt>
+                        <dd>
+                            <input id="txtPassword1" name="txtPassword1" type="password" class="input" placeholder="请再次输入密码" datatype="*" recheck="txtPassword" nullmsg="请再输入一次密码" errormsg="两次输入的密码不一致" sucmsg=" " />
+                            <span class="Validform_checktip">请再次输入登录密码</span>
+                        </dd>
+                    </dl>
+                    <%if(uconfig.regstatus==1||uconfig.regstatus==2)%>
+                    <!--开放注册及手机注册-->
+                    <dl class="form-group">
+                        <dt>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</dt>
+                        <dd>
+                            <input id="txtMobile" name="txtMobile" type="text" class="input" placeholder="输入手机号码" datatype="m" nullmsg="请输入手机号码" sucmsg=" " />
+                            <span class="Validform_checktip">请输入手机号码</span>
+                        </dd>
+                    </dl>
+                    <!--/开放注册及手机注册-->
+                    <%/if%>
+                    
+                    <%if(uconfig.regstatus==2)%>
+                    <!--开启手机注册-->
+                    <dl class="form-group">
+                        <dt>确 认 码：</dt>
+                        <dd>
+                            <input id="txtCode" name="txtCode" type="text" class="input code" placeholder="输入手机收到的确认码"  datatype="s4-20" nullmsg="请输入手机收到的确认码" sucmsg=" " />
+                            <a class="send" href="javascript:;" onclick="sendSMS(this,'#txtMobile','{config.webpath}tools/submit_ajax.ashx?action=user_verify_smscode&site={site.build_path}');">发送确认码</a>
+                            <span class="Validform_checktip">请手机短信收到的验证码</span>
+                        </dd>
+                    </dl>
+                    <!--/开启手机注册-->
+                    <%/if%>
+                    
+                    <%if(uconfig.regstatus==1||uconfig.regstatus==3||uconfig.regstatus==4)%>
+                    <!--开放注册及邮箱邀请注册-->
+                    <dl class="form-group">
+                        <dt>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</dt>
+                        <dd>
+                            <input id="txtEmail" name="txtEmail" type="text" class="input" placeholder="输入邮箱账号" datatype="e" nullmsg="请输入电子邮箱账号" sucmsg=" " />
+                            <span class="Validform_checktip">请输入电子邮箱账号</span>
+                        </dd>
+                    </dl>
+                    <!--/开放注册及邮箱邀请注册-->
+                    <%/if%>
+                    
+                    <%if(uconfig.regstatus==4)%>
+                    <!--开启邀请注册-->
+                    <dl class="form-group">
+                        <dt>邀 请 码：</dt>
+                        <dd>
+                            <input id="txtCode" name="txtCode" type="text" class="input" placeholder="输入好友提供的邀请码" datatype="s2-20" nullmsg="请输入注册邀请码" sucmsg=" " />
+                            <span class="Validform_checktip">输入好友提供的邀请码</span>
+                        </dd>
+                    </dl>
+                    <!--/开启邀请注册-->
+                    <%/if%>
+                    
+                    <%if(uconfig.regstatus==1)%>
+                    <!--开放注册-->
+                    <dl class="form-group">
+                        <dt>验 证 码：</dt>
+                        <dd>
+                            <input id="txtCode" name="txtCode" type="text" class="input code" placeholder="输入验证码" datatype="s4-20" nullmsg="请输入右边显示的验证码" sucmsg=" " />
+                            <a class="send" href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                              <img src="{config.webpath}tools/verify_code.ashx" width="80" height="22" />
+                            </a>
+                        </dd>
+                    </dl>
+                    <!--/开放注册-->
+                    <%/if%>
+                    
+                    <%if(uconfig.regrules==1)%>
+                    <!--开启注册协议-->
+                    <dl class="form-group">
+                        <dd>
+                            <input id="chkAgree" name="chkAgree" type="checkbox" value="1">
+                            <label for="chkAgree">我已仔细阅读并接受 <a href="javascript:;" onclick="showWindow('#regrules');">注册许可协议</a></label>
+                            <div id="regrules" title="注册许可协议" style="display:none;">{uconfig.regrulestxt}</div>
+                        </dd>
+                    </dl>
+                    <!--/开启注册协议-->
+                    <%/if%>
+                    
+                    <dl class="form-group">
+                        <dd>
+                        <%if(uconfig.regrules==1)%>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="立即注册" class="submit" disabled="disabled" />
+                        <%else%>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="立即注册" class="submit" />
+                        <%/if%>
+                        </dd>
+                    </dl>
+                </div>
+            </form>
+            <!--/会员注册-->
+            <%/if%>
+            
+            <%if(action=="close")%>
+            <!--关闭会员注册-->
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">温馨提示</a>
+            </div>
+            <div class="msg-tips">
+                <div class="icon warning">
+                    <i class="iconfont icon-tip"></i>
+                </div>
+                <div class="info">
+                    <strong>非常抱歉，系统暂停注册会员服务！</strong>
+                    <p>由于某些原因，系统暂停注册会员，如对您造成不便之处，我们深感遗憾！</p>
+                    <p>如需了解开放时间，请联系本站客服或管理员。</p>
+                    <p>您可以点击这里<a href="<%linkurl("index")%>">返回网站首页</a></p>
+                </div>
+            </div>
+            <!--/关闭会员注册-->
+            <%/if%>
+            
+            <%if(action=="sendmail")%>
+            <!--发送邮箱验证-->
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">温馨提示</a>
+            </div>
+            <div class="msg-tips">
+                <div class="icon warning">
+                    <i class="iconfont icon-tip"></i>
+                </div>
+                <div class="info">
+                    <strong>注册成功，但需要邮箱验证后方可使用！</strong>
+                    <p>欢迎您成为本站会员，您的账户目前处于未验证状态，请尽快登录您的注册邮箱激活该会员账户。</p>
+                    <p>系统已经自动为您发送了一封验证邮件，如果您长时间未收到邮件，请点击这里<a href="javascript:;" onclick="sendEmail('{username}', '{config.webpath}tools/submit_ajax.ashx?action=user_verify_email&site={site.build_path}');">重新发送邮件</a>！</p>
+                    <p>
+                        温馨提示：邮件验证有效期为
+                        <%if {uconfig.regemailexpired}>0%>
+                            {uconfig.regemailexpired}天
+                        <%else%>
+                            无限制
+                        <%/if%>
+                    </p>
+                </div>
+            </div>
+            <!--/发送邮箱验证-->
+            <%/if%>
+            
+            <%if(action=="checkmail")%>
+            <!--邮箱验证成功-->
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">温馨提示</a>
+            </div>
+            <div class="msg-tips">
+                <div class="icon">
+                    <i class="iconfont icon-check"></i>
+                </div>
+                <div class="info">
+                    <strong>恭喜您{username}，已通过邮件激活会员账户</strong>
+                    <p>会员账户已经激活，从现在起您可以享受更多的会员服务。</p>
+                    <p>赶快点击这里返回<a href="<%linkurl("index")%>">首页</a>，点击这里<a href="<%linkurl("usercenter","index")%>">进入会员中心</a></p>
+                </div>
+            </div>
+            <!--/邮箱验证成功-->
+            <%/if%>
+            
+            <%if(action=="checkerror")%>
+            <!--注册验证失败-->
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">温馨提示</a>
+            </div>
+            <div class="msg-tips">
+                <div class="icon error">
+                    <i class="iconfont icon-error"></i>
+                </div>
+                <div class="info">
+                    <strong>出错了，该用户不存在或验证已过期！</strong>
+                    <p>无法验证你的账户，可能是你的用户名不存在或者验证码已经过期！</p>
+                    <p>不过别担心，可以联系本站客服处理，点击这里<a href="<%linkurl("login")%>">进入会员中心</a></p>
+                </div>
+            </div>
+            <!--/注册验证失败-->
+            <%/if%>
+            
+            <%if(action=="verify")%>
+            <!--人工审核-->
+            <div class="nav-tit">
+                <a class="selected" href="javascript:;">温馨提示</a>
+            </div>
+            <div class="msg-tips">
+                <div class="icon warning">
+                    <i class="iconfont icon-tip"></i>
+                </div>
+                <div class="info">
+                    <strong>账户未审核状态，请等待人工审核通过！</strong>
+                    <p>您的会员账户还没有审核通过，等不及的话请联系本站客服！</p>
+                    <p>由于种种原因，本站不得以暂时开启人工审核，如对您造成不便敬请原谅。</p>
+                    <p>您可以点击这里<a href="<%linkurl("index")%>">返回网站首页</a></p>
+                </div>
+            </div>
+            <!--/人工审核-->
+            <%/if%>
+            
+        </div>
+    </div>
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>酷播V4.0(CuPlayerV4.0)版_酷播官方演示</title>
+<meta name="keywords" content="极酷阳光播放器,播放器演示,酷播官方,cuplayer"/>
+<meta name="description" content="酷播V4.0(CuPlayerV4.0)版使用官方演示实例,极酷阳光播放器官方使用帮助与介绍,官方代码写法示例"/>
+<script type="text/javascript">
+<!--
+function getLight(pars){if(pars=="open"){close_light(this)}else{close_light(this)}};function thisMovie(movieName){if(navigator.appName.indexOf("Microsoft")!=-1){return window[movieName]}else{return document[movieName]}}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.video { OVERFLOW: hidden; WIDTH: 100%; POSITION: relative}
+.close_light_bg {DISPLAY: none; BACKGROUND: #000; FILTER: alpha(opacity = 95); LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 100%; opacity: .95}
+
+body { padding:10px;}
+div.help { line-height:32px; font-size:14px;}
+-->
+</style>
+</head>
+
+<body> 
+<div class="close_light_bg" id="close_light_bg"></div>
+<!--极酷阳光播放器/代码开始-->
+<script type="text/javascript" src="js/swfobject.js"></script>
+<div class="video" id="CuPlayer"><b><img src="images/loading.gif"  /> 网页视频播放器加载中，请稍后...<a href="http://www.cuplayer.com/cuplayer" target="_blank">点此升级&gt;&gt;</a></b></div>
+<script type="text/javascript">
+var so = new SWFObject("player.swf","myCuPlayer","700","410","9","#000000");
+so.addParam("allowfullscreen","true");
+so.addParam("allowscriptaccess","always");
+so.addParam("wmode","opaque");
+so.addParam("quality","high");
+so.addParam("salign","lt");
+//播放器设置文件-----------------------------
+so.addVariable("JcScpFile","CuSunV4set2.xml"); //配置文件
+so.addVariable("JcScpVideoPath","http://demo.cuplayer.com/file/test.mp4"); //视频文件地址
+//-视频广告参数-----------------------------
+so.addVariable("ShowJcScpAVideo","yes"); //是否显示前置视频广告
+//so.addVariable("JcScpAVideoServer","rtmp://www.yoursite.com/vod"); //前置视频广告服务器
+so.addVariable("JcScpAVideoPath","http://promotion.geely.com/xindihao/media/video1.mp4|http://promotion.geely.com/xindihao/media/video2.mp4"); //前置视频广告地址
+so.addVariable("JcScpAVideoLink","http://www.cuplayer.com/CuPlayer/link/L021.html|http://www.cuplayer.com/CuPlayer/link/L022.html"); //前置视频广告链接
+
+so.addVariable("JcScpSharetitle","酷播V4.0(CuPlayerV4.0)版使用官方演示实例"); //视频标题
+so.write("CuPlayer");
+</script>
+<script language=javascript src="js/jquery-1.4.2.min.js" type=text/javascript></script> 
+<script language=javascript src="js/action.js" type=text/javascript></script>
+<!--极酷阳光播放器/代码结束-->
+
+<h1>酷播V4.0版演示(开启视频广告)</h1>
+<!-- help/Bgein -->
+<div class="help">
+ <p>
+        <strong>播放器使用环境及注意事项：</strong><br />
+        *  强烈建议使用<strong>酷播云端播放器</strong>（永久免费 /  支持视频数据统计分析），<a href="http://www.cuplayer.com/Cloud" target="_blank">马上使用&gt;&gt;</a><br />
+        *  请用户在IIS下或其它web网站环境下使用，<a href="http://www.cuplayer.com/CuPlayer/help/Step/" target="_blank">新手指南&gt;&gt;</a>；<br />
+        *  请确认您的环境是否支持支持flv,mp4等视频文件的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  播放器在使用过程中，支持加载XML(asp,php,jsp,aspx)等格式配置文件，<a href="http://www.cuplayer.com/CuPlayer/help/Help61.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  建议使用之前了解一下本款播放器&ldquo;<strong>双重参机机制</strong>&rdquo;的含义，<a href="http://www.cuplayer.com/CuPlayer/help/Help23.html" target="_blank">详细参见&gt;&gt;</a>。<br />
+        * 请确认播放器相关的文件地址是否正确。<br />
+        <strong>遇到问题如何获得帮助：</strong>        <br />
+        * 官方应用文档：<a href="http://www.cuplayer.com/CuPlayer/help/index.html" target="_blank" class="cOrange">http://www.cuplayer.com/CuPlayer/help/index.html</a><br />
+        * 酷播官方客服：<a href="http://www.cuplayer.com/CuPlayer/service.html" target="_blank">http://www.cuplayer.com/CuPlayer/service.html</a><br />
+        <strong>如何正确的向客服提问？</strong> <br />
+    A:请将您的测试页上传到您的某个网站目录下，然后把测试页地址发给客服，此种情况下，问题解决率达90%以上。<br />
+    （如果您无法提供测试页地址，很多问题，无法协助您找出准确的原因）； <br />
+  B:不能提供外网测试页面的提问，问题解决率仅为5% 左右。<br />
+  <strong>酷播V4.0版官方网站：</strong> <a href="http://www.cuplayer.com/CuPlayer/" target="_blank">http://www.cuplayer.com/CuPlayer/</a><br />
+<strong>酷播云端播放器官方网站：</strong> <a href="http://www.cuplayer.com/Cloud/" target="_blank">http://www.cuplayer.com/Cloud/</a><br /></p>
+</div>
+<!-- help/End -->
+<div style="display:none;">
+<script type="text/javascript" src="http://www.cuplayer.com/CuPlayer/js/stat.js"></script>
+</div>
+</body>
+</html>
+

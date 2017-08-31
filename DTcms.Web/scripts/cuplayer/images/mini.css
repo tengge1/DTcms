@@ -1,0 +1,69 @@
+﻿@charset "utf-8";
+/* ----------------------------------------
+	* Filename:     common.css
+	* Description:  Global CSS
+	* CssCreate:    2016-01-16 16:16
+	* DesignBy:     CuPlayer.com
+------------------------------------------ */
+
+body {margin:0; padding:0;  margin-top:0px;font-size:12px; color:#313131;text-align: left; font-family:Verdana, Arial, Helvetica, sans-serif; background:#ffffff; }
+body { width:100%; margin:0 auto;}
+div,ul,li,ol,dl,dt,dd,form,img,p{margin: 0; padding: 0; border: 0; }
+
+li{list-style-type:none;}
+h4,h5{margin: 0; padding: 0; font-size:14px;}
+/* __link */
+a {color: #313131; text-decoration:none;}
+a:link {color: #313131;text-decoration:none;}
+a:visited {color: #313131;text-decoration:none;}
+a:hover {color: #990000; text-decoration:underline;}
+a:active {color: #313131;}
+.cRed,a.cRed:link,a.cRed:visited{ color:#ff0000; }
+.cBlue,a.cBlue:link,a.cBlue:visited,a.cBlue:active{color:#066bb7; }
+.cOrange,a.cOrange:link,a.cOrange:visited{ color:orangered; }
+div.clear {clear:both;height:0px;}
+div.clearfix { zoom:1;}
+div.clearfix:after {content:".";clear:both;height:0;display:block;visibility:hidden;}
+/* Hide from IE Mac \*/ 
+.clearfix { display:block; } 
+
+/* header --------------------- */
+div#header { height:44px; background:#2d2e2f; border-bottom:1px #000000 solid; overflow:hidden;}
+div#header div.logo {width:120px;float:left;}
+
+div#header div.info {width:45px;float:right;}
+div#header div.other {width:85px;float:right; line-height:44px;}
+div#header div.other a,div#header div.other a:link,div#header div.other a:visited { display:block; line-height:44px; color:#cccccc; font-size:14px;}
+/* footer --------------------- */
+div#footer { height:45px;line-height:45px;background:#333;font-size:1.2rem; z-index:1;  overflow:hidden;}
+div#footer .logo02{ width:118px;height:29px;float:left;margin:6px 0 0 5px}
+div#footer em{color:#444}
+div#footer .left-part{float:left;}
+div#footer .right-part{float:right;}
+div#footer em{color:#444}
+div#footer a,div#footer a:link,div#footer a:visited{color:#999;padding:0 10px; color:#cccccc; font-size:14px;}
+
+/* content --------------------- */
+div#content { background:#ffffff; }
+div#content div.video { background:#000000; }
+div#content div#CuPlayer { }
+div#content h3 { line-height:40px; height:40px; background:#cccccc; border-top:2px #515151 solid;}
+div#content h3 span { padding-left:20px;}
+
+div.piclist {padding:10px; height: 300px; overflow:hidden; }
+div.piclist dl { width:170px;float:left; height: 160px; overflow:hidden; }
+div.piclist dl dd { line-height:24px; height:48px; overflow:hidden; padding:0 10px; }
+a.p145x100 img { width:145px;height:100px; overflow:hidden; }  /*小图*/
+a.p145x100 { border:1px #dadada solid; padding:1px;display:block; width:145px;margin:0 auto;  background:white; height:100px; overflow:hidden;}
+a.p145x100:hover{ border:1px #eb6100 solid; } 
+
+/* other */
+.video { OVERFLOW: hidden; WIDTH: 100%; POSITION: relative}
+.close_light_bg {DISPLAY: none; BACKGROUND: #000; FILTER: alpha(opacity = 95); LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 100%; opacity: .95}
+div.help { line-height:32px; font-size:14px; padding:10px 20px;}
+div.help p.open { padding-left:5px;} 
+div.code { width:100%; float:right; line-height:32px; font-size:14px; font-weight:bold;}
+
+
+
+/* LastTime:2016-01-16 16:16 */

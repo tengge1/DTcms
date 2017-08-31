@@ -1,0 +1,168 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<%set string category_title=get_category_title(model.category_id,"新闻资讯")%>
+<title>{model.title} - {category_title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="news">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<%set string category_nav=get_category_menu("news_list", model.category_id)%>
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("news")%>">新闻资讯</a>
+        {category_nav}
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section">
+    <!--/页面右边-->
+    <div class="right-260">
+        <div class="bg-wrap nobg">
+            <div class="sidebar-box">
+                <h4>资讯类别</h4>
+                <ul class="navbar">
+                    <%set DataTable categoryList1=get_category_child_list(channel, 0)%>
+                    <%foreach(DataRow cdr1 in categoryList1.Rows)%>
+                    <li>
+                        <h5><a href="<%linkurl("news_list",{cdr1[id]})%>">{cdr1[title]}</a></h5>
+                        <p>
+                        <%set DataTable categoryList2=get_category_child_list(channel, {strtoint({cdr1[id]})})%>
+                        <%foreach(DataRow cdr2 in categoryList2.Rows)%>
+                            <%if({strtoint({cdr2[id]})}=={model.category_id})%>
+                            <a href="<%linkurl("news_list",{cdr2[id]})%>" class="selected">{cdr2[title]}</a>
+                            <%else%>
+                            <a href="<%linkurl("news_list",{cdr2[id]})%>">{cdr2[title]}</a>
+                            <%/if%>
+                        <%/foreach%>
+                        </p>
+                    </li>
+                    <%/foreach%>
+                </ul>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>图片新闻</h4>
+                <ul class="side-img-list">
+                <%set DataTable redNews=get_article_list(channel, 0, 4, "status=0 and is_red=1 and img_url<>''")%>
+                <%foreach(DataRow dr in redNews.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <img src="{dr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("news_show",{dr[id]})%>">{dr[title]}</a>
+                            <span><%datetostr({dr[add_time]},yyyy-MM-dd)%></span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>阅读排行</h4>
+                <ul class="txt-list">
+                <%set DataTable hotNews=get_article_list(channel, 0, 10, "status=0", "click desc,id desc")%>
+                <%loop hotdr hotNews%>
+                    <li>
+                        <%if(hotdr__loop__id<2)%>
+                        <label class="hot"><%=hotdr__loop__id%></label>
+                        <%else%>
+                        <label><%=hotdr__loop__id%></label>
+                        <%/if%>
+                        <a href="<%linkurl("news_show",{hotdr[id]})%>">{hotdr[title]}</a>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <!--/页面右边-->
+    
+    <!--页面左边-->
+    <div class="left-auto">
+        <div class="bg-wrap">
+            <div class="meta">
+                <h2>{model.title}</h2>
+                <div class="info">
+                    <span><i class="iconfont icon-date"></i>{model.add_time}</span>
+                    <span><i class="iconfont icon-comment"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>人评论</span>
+                    <span><i class="iconfont icon-view"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={model.channel_id}&id={model.id}&click=1"></script>次</span>
+                </div>
+                <div class="note">
+                    <p>{model.zhaiyao}</p>
+                </div>
+            </div>
+            <div class="entry">
+                {model.content}
+            </div>
+            
+            <!--上下一条-->
+            <div class="next-box clearfix">
+                <p class="prev">上一篇：<%=get_prevandnext_article("news_show", -1, "没有了", 0)%></p>
+                <p class="next">下一篇：<%=get_prevandnext_article("news_show", 1, "没有了", 0)%></p>
+            </div>
+            <!--/上下一条-->
+            
+            <!--相关资讯-->
+            <div class="rel-box">
+                <h2 class="slide-tit">
+                    <span>相关资讯</span>
+                </h2>
+                <ul class="rel-list">
+                <%set DataTable relNews=get_article_list(channel, model.category_id, 4, "is_red=1 and img_url<>'' and id<>"+model.id)%>
+                <%foreach(DataRow dr in relNews.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <a title="{dr[title]}" href="<%linkurl("news_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}">
+                            </a>
+                      </div>
+                      <div class="info">
+                            <h3><a title="{dr[title]}" href="<%linkurl("news_show",{dr[id]})%>">{dr[title]}</a></h3>
+                            <p>{dr[zhaiyao]}</p>
+                            <span>{dr[add_time]}</span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                <%if(relNews.Rows.Count<1)%>
+                    <div class="nodata">暂无相关的数据...</div>
+                <%/if%>
+                </ul>
+            </div>
+            <!--/相关资讯-->
+            
+            <!--网友评论-->
+            <div class="comment-box">
+                <h2 class="slide-tit">
+                    <strong>共有<script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>条评论</strong>
+                    <span>网友评论</span>
+                </h2>
+                <%template src="_comment_box.html"%>
+            </div>
+            <!--/网友评论-->
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

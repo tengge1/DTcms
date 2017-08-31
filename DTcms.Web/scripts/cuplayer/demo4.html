@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>酷播V4.0(CuPlayerV4.0)版_酷播官方演示</title>
+<meta name="keywords" content="极酷阳光播放器,播放器演示,酷播官方,cuplayer"/>
+<meta name="description" content="酷播V4.0(CuPlayerV4.0)版使用官方演示实例,极酷阳光播放器官方使用帮助与介绍,官方代码写法示例"/>
+<script type="text/javascript">
+<!--
+/**
+* JS与AS交互及AS与JS交互酷播官方演示
+* @基于酷播V4.0版
+* @VERTION {V2.5} 2016/04/22
+* @AS与JS交互 ---------------------
+* @function {getLight}    开灯关灯
+
+* @function {seekVideo(pars,mode)} 查询视频节点播放
+* @function {playPauseVideo}       暂停(暂停播放)
+* @function {resumeVideo}          暂停(继续播放)
+* @function {rePlayVideo}          视频重播
+* @function {stopVideo}            视频停止
+* @function {getState(pars)}       获取视频状态
+* @function {getTimes(pars)}       获取当前视频时间
+* @function {getTotalTime(pars)}   获取视频总时长
+* @function {getTotalTime(pars)}   获取视频MoveTip提示点
+
+*/
+function getLight(pars){if(pars=="open"){close_light(this);}else{close_light(this);}}
+function thisMovie(movieName) {
+    if (navigator.appName.indexOf("Microsoft") != -1) {
+        return window[movieName]
+    }
+    else {
+        return document[movieName]
+    }
+}
+
+//查询视频节点播放(与RTMP协议视频地址配合效果最佳)
+function seekVideo(pars,mode){
+	var p = pars;
+	var m = mode;
+	thisMovie("myCuPlayer").seekVideo(pars,mode);
+}
+//暂停(暂停播放)
+function playPauseVideo(){
+	thisMovie("myCuPlayer").playPauseVideo();
+}
+//暂停(继续播放)
+function resumeVideo(){
+	thisMovie("myCuPlayer").resumeVideo();
+}
+//视频重播
+function rePlayVideo(){
+	thisMovie("myCuPlayer").rePlayVideo();
+}
+//视频停止
+function stopVideo(){
+	thisMovie("myCuPlayer").stopVideo();
+}
+//获取视频状态
+function getState(pars){	
+  var state = pars;
+  document.getElementById("state").innerHTML = "输出当前状态信息：<span class='cRed2 b f16'>"+state+"</span>";
+}
+//获取当前视频时间
+function getTimes(pars){	
+  var times = pars;
+  document.getElementById("times").innerHTML = "输出当前播放时间：<span class='cRed2 b f16'>"+times+"</span>";
+}
+//获取视频总时长
+function getTotalTime(pars){
+  var totalTime = pars;
+  if(totalTime!=null){
+  document.getElementById("totalTime").innerHTML = "输出视频总时长：<span class='cRed2 b f16'>"+totalTime+"</span>";
+  }
+}
+//获取视频MoveTip提示点
+function getTip(pars){	
+  var tip = pars;
+  if (tip==50 || tip==80|| tip== 120){
+	 document.getElementById("tip").innerHTML = "输出当前提示点："+tip+" | 已执行暂停动作，是否继续播放？";
+	 playPauseVideo();
+	 //alert("提示点："+tip);
+  } 
+}
+ 
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.video { OVERFLOW: hidden; WIDTH: 100%; POSITION: relative}
+.close_light_bg {DISPLAY: none; BACKGROUND: #000; FILTER: alpha(opacity = 95); LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 100%; opacity: .95}
+
+.cRed2,a.cRed2:link,a.cRed2:visited{ font-family:"Microsoft YaHei","微软雅黑","Microsoft JhengHei",MingLiu,Verdana, Arial, Helvetica, sans-serif; color:#ce0400; text-decoration:underline; font-size:16px; font-weight:bold;} a.cRed2:hover{ color:#000000; text-decoration:underline; font-size:16px; font-weight:bold; }
+
+body { padding:10px;}
+div.help { line-height:32px; font-size:14px;}
+
+.btn { width:100px;height:40px;font-size:14px; line-height:40px; }
+.btn2 { width:200px;height:40px;font-size:14px; line-height:40px;}
+-->
+</style>
+</head>
+
+<body>
+<div class="close_light_bg" id="close_light_bg"></div>
+ 
+
+<!--极酷播放器/代码开始-->
+<script type="text/javascript" src="js/swfobject.js"></script>
+<div class="video" id="CuPlayer"><b><img src="images/loading.gif"  /> 网页视频播放器加载中，请稍后...<a href="http://www.cuplayer.com/cuplayer" target="_blank">点此升级&gt;&gt;</a></b></div>
+<script type="text/javascript">
+var so = new SWFObject("player.swf","myCuPlayer","700","420","9","#000000");
+so.addParam("allowfullscreen","true");
+so.addParam("allowscriptaccess","always");
+so.addParam("wmode","opaque");
+so.addParam("quality","high");
+so.addParam("salign","lt");
+//播放器设置文件-----------------------------
+so.addVariable("JcScpFile","CuSunV4set.xml");
+//视频文件及略缩图--------------------------
+//so.addVariable("JcScpServer","rtmp://www.yoursite.com/vod");
+so.addVariable("JcScpVideoPath","http://www.boaoforum.org/u/cms/www/201603/21104056mhqz.mp4"); 
+so.addVariable("JcScpImg","images/startpic.jpg");
+so.addVariable("JcScpCuePointTime","50|80|120"); //提示点秒数值
+//-----------------------------------------
+so.addVariable("ShowJcScpAVideo","no");//是否开启前置广告
+so.write("CuPlayer");
+
+
+</script>
+<script language=javascript src="js/jquery-1.4.2.min.js" type=text/javascript></script> 
+<script language=javascript src="js/action.js" type=text/javascript></script>
+<!--极酷播放器/代码结束-->
+<p></p>
+<form>
+<input type="button"  onclick="seekVideo(50,0)" value="第50节点" />
+  <input type="button"  onclick="seekVideo(140,0)" value="第140节点" />
+   <input type="button"  onclick="seekVideo(240,0)" value="第240节点" />
+   
+  <input type="button" onclick="playPauseVideo()" value="暂停(暂停播放)" />
+  <input type="button" onclick="resumeVideo()" value="暂停(继续播放)" />
+  <input type="button" onclick="rePlayVideo()" value="视频重播" />
+    <input type="button" onclick="stopVideo()" value="视频停止" />
+</form>
+<h1><strong style="color:red;">JS与AS交互</strong>及<strong style="color:red;">AS与JS交互</strong>官方演示(基于酷播V4.0版)</h1>
+
+
+<p><span class="time22" id="state">Loading...</span></p>
+<p><span class="time22" id="times">Loading...</span></p>
+<p><span class="time22" id="totalTime">Loading...</span><p>
+<p><span class="time22" id="tip">tip...</span><span class="time22" id="tip2">tip...</span><p>
+<!-- help/Bgein -->
+<div class="help">
+ <p>
+        <strong>播放器使用环境及注意事项：</strong><br />
+        *  强烈建议使用<strong>酷播云端播放器</strong>（永久免费 /  支持视频数据统计分析），<a href="http://www.cuplayer.com/Cloud" target="_blank">马上使用&gt;&gt;</a><br />
+        *  请用户在IIS下或其它web网站环境下使用，<a href="http://www.cuplayer.com/CuPlayer/help/Step/" target="_blank">新手指南&gt;&gt;</a>；<br />
+        *  请确认您的环境是否支持支持flv,mp4等视频文件的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  播放器在使用过程中，支持加载XML(asp,php,jsp,aspx)等格式配置文件，<a href="http://www.cuplayer.com/CuPlayer/help/Help61.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  建议使用之前了解一下本款播放器&ldquo;<strong>双重参机机制</strong>&rdquo;的含义，<a href="http://www.cuplayer.com/CuPlayer/help/Help23.html" target="_blank">详细参见&gt;&gt;</a>。<br />
+        * 请确认播放器相关的文件地址是否正确。<br />
+        <strong>遇到问题如何获得帮助：</strong>        <br />
+        * 官方应用文档：<a href="http://www.cuplayer.com/CuPlayer/help/index.html" target="_blank" class="cOrange">http://www.cuplayer.com/CuPlayer/help/index.html</a><br />
+        * 酷播官方客服：<a href="http://www.cuplayer.com/CuPlayer/service.html" target="_blank">http://www.cuplayer.com/CuPlayer/service.html</a><br />
+        <strong>如何正确的向客服提问？</strong> <br />
+    A:请将您的测试页上传到您的某个网站目录下，然后把测试页地址发给客服，此种情况下，问题解决率达90%以上。<br />
+    （如果您无法提供测试页地址，很多问题，无法协助您找出准确的原因）； <br />
+  B:不能提供外网测试页面的提问，问题解决率仅为5% 左右。<br />
+  <strong>酷播V4.0版官方网站：</strong> <a href="http://www.cuplayer.com/CuPlayer/" target="_blank">http://www.cuplayer.com/CuPlayer/</a><br />
+<strong>酷播云端播放器官方网站：</strong> <a href="http://www.cuplayer.com/Cloud/" target="_blank">http://www.cuplayer.com/Cloud/</a><br /></p>
+</div>
+<!-- help/End -->
+<div style="display:none;">
+<script type="text/javascript" src="http://www.cuplayer.com/CuPlayer/js/stat.js"></script>
+</div>
+</body>
+</html>
+

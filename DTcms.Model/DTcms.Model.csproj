@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2BBC90CB-5D42-4F0F-BF96-4DA42F4DDB39}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTcms.Model</RootNamespace>
+    <AssemblyName>DTcms.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="article.cs" />
+    <Compile Include="article_albums.cs" />
+    <Compile Include="article_attach.cs" />
+    <Compile Include="article_attribute_field.cs" />
+    <Compile Include="article_category.cs" />
+    <Compile Include="article_comment.cs" />
+    <Compile Include="article_tags.cs" />
+    <Compile Include="article_tags_relation.cs" />
+    <Compile Include="express.cs" />
+    <Compile Include="mail_template.cs" />
+    <Compile Include="manager.cs" />
+    <Compile Include="manager_log.cs" />
+    <Compile Include="manager_role.cs" />
+    <Compile Include="manager_role_value.cs" />
+    <Compile Include="navigation.cs" />
+    <Compile Include="oauth_app.cs" />
+    <Compile Include="orders.cs" />
+    <Compile Include="order_config.cs" />
+    <Compile Include="order_goods.cs" />
+    <Compile Include="payment.cs" />
+    <Compile Include="plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="shopping_cart.cs" />
+    <Compile Include="sites.cs" />
+    <Compile Include="site_channel.cs" />
+    <Compile Include="site_channel_field.cs" />
+    <Compile Include="site_oauth.cs" />
+    <Compile Include="site_payment.cs" />
+    <Compile Include="sms_template.cs" />
+    <Compile Include="sys_config.cs" />
+    <Compile Include="template.cs" />
+    <Compile Include="url_rewrite.cs" />
+    <Compile Include="users.cs" />
+    <Compile Include="user_amount_log.cs" />
+    <Compile Include="user_attach_log.cs" />
+    <Compile Include="user_code.cs" />
+    <Compile Include="user_config.cs" />
+    <Compile Include="user_groups.cs" />
+    <Compile Include="user_group_price.cs" />
+    <Compile Include="user_login_log.cs" />
+    <Compile Include="user_message.cs" />
+    <Compile Include="user_oauth.cs" />
+    <Compile Include="user_point_log.cs" />
+    <Compile Include="user_recharge.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTcms.Common\DTcms.Common.csproj">
+      <Project>{408686E7-0249-4899-85E0-77ACA8F9F07F}</Project>
+      <Name>DTcms.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

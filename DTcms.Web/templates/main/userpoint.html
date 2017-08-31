@@ -1,0 +1,197 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的积分 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("usercenter","index")%>">会员中心</a>
+        <a href="<%linkurl("userpoint","list")%>">我的积分</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--页面左边-->
+    <%template src="_ucenter_nav.html"%>
+    <!--/页面左边-->
+    
+    <!--页面左边-->
+    <div class="right-auto">
+        <div class="bg-wrap" style="min-height:765px;">
+            
+            <%if(action=="convert")%>
+            <!--积分兑换-->
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="<%linkurl("userpoint","convert")%>">积分兑换</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("userpoint","list")%>">积分明细</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="form-box">
+            <%if(uconfig.pointcashrate==0)%>
+                <div class="msg-box">
+                    <i class="iconfont icon-tip"></i>
+                    <p>目前的积分兑换功能已被关闭！</p>
+                </div>
+            <%else if(userModel.amount<1)%>
+                <div class="msg-box">
+                    <i class="iconfont icon-tip"></i>
+                    <p>目前您的余额不足，不能使用积分兑换功能！</p>
+                </div>
+            <%else%>
+                <link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+                <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+                <script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+                <script type="text/javascript">
+                $(function(){
+                    //初始化表单
+                    AjaxInitForm('#pointForm', '#btnSubmit', 1, '#turl');
+                });
+                </script>
+                <input id="hideAmount" name="hideAmount" type="hidden" value="{userModel.amount}" />
+                <input id="hideCashrate" name="hideCashrate" type="hidden" value="{uconfig.pointcashrate}" />
+                <form id="pointForm" name="pointform" url="{config.webpath}tools/submit_ajax.ashx?action=user_point_convert">
+                    <dl class="form-group">
+                        <dt>账户余额：</dt>
+                        <dd>
+                            目前账户积分：<b>{userModel.point}</b>分，可用金额：<b>{userModel.amount}</b>元
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>兑换说明：</dt>
+                        <dd>
+                            积分兑换最少金额为1元，兑换比例为：1元等于{uconfig.pointcashrate}个积分
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>积分兑换：</dt>
+                        <dd>
+                            <input name="txtAmount" id="txtAmount" type="text" class="input" onkeydown="return checkNumber(event);" onchange="numConvert(this);" datatype="n"  nullmsg="请输入金额" sucmsg=" " style="width:80px;" />
+                            金额转换成 <strong id="convertPoint">0</strong> 积分
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>验证用户密码：</dt>
+                        <dd>
+                            <input name="txtPassword" id="txtPassword" type="password" class="input" datatype="*6-20" nullmsg="请输入密码" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="确认兑换" class="submit" />
+                        </dd>
+                    </dl>
+                </form>
+            <%/if%>
+            </div>
+            <input id="turl" name="turl" type="hidden" value="<%linkurl("userpoint","convert")%>" /><!--存在跳转的URL值-->
+            <!--/积分兑换-->
+            
+            <%else if(action=="list")%>
+            <!--积分明细-->
+            <link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+            <script type="text/javascript">
+            function ExecPostBack(checkValue) {
+                if (arguments.length == 1) {
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_point_delete', checkValue, '#turl');
+                }else{
+                    var valueArr = '';
+                    $("input[name='checkId']:checked").each(function(i){
+                        valueArr += $(this).val();
+                        if(i < $("input[name='checkId']:checked").length - 1){
+                            valueArr += ","
+                        }
+                    });
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_point_delete', valueArr, '#turl');
+                }
+            }
+            </script>
+            
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li>
+                        <a href="<%linkurl("userpoint","convert")%>">积分兑换</a>
+                    </li>
+                    <li class="selected">
+                        <a href="<%linkurl("userpoint","list")%>">积分明细</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" class="mtable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <%set DataTable pointList=get_user_point_list(20, page, "user_id="+userModel.id, out totalcount)%> <!--取得一个DataTable-->
+                <%set string pagelist=get_page_link(20, page, totalcount, "userpoint", action, "__id__")%> <!--取得分页页码列表-->
+                <%foreach(DataRow dr in pointList.Rows)%>
+                    <tr>
+                        <td width="20" align="center">
+                            <input name="checkId" class="checkall" type="checkbox" value="{dr[id]}" >
+                        </td>
+                        <td width="150">{dr[add_time]}</td>
+                        <td>{dr[remark]}</td>
+                        <td width="50">
+                        <%if({strtoint({dr[value]})}>0)%>
+                            +{dr[value]}
+                        <%else%>
+                            {dr[value]}
+                        <%/if%>
+                        </td>
+                        <td width="35">
+                            <a onclick="ExecPostBack('{dr[id]}');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                <%/foreach%>
+                <%if(pointList.Rows.Count==0)%>
+                    <tr><td align="center">暂无积分明细...</td></tr>
+                <%/if%>
+                </tbody>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                    <div class="btn-box">
+                        <a onclick="checkAll(this);" href="javascript:;">全选</a>
+                        <a onclick="ExecPostBack();" href="javascript:;">删除</a>
+                    </div>
+                </div>
+            </div>
+            <input id="turl" type="hidden" value="<%linkurl("userpoint","list")%>" /><!--存在跳转的URL值-->
+            <!--/积分明细-->
+            <%/if%>
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

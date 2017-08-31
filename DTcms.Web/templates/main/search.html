@@ -1,0 +1,122 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>站内搜索 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="news">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="javascript:;">站内搜索</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--/页面右边-->
+    <div class="right-260">
+        <div class="bg-wrap nobg">
+            <div class="sidebar-box">
+                <h4>热门标签</h4>
+                <div class="tags-box clearfix">
+                <%set DataTable tagsList=get_article_tags(0, "is_red=1")%>
+                <%foreach(DataRow dr in tagsList.Rows)%>
+                    <a href="<%linkurl("search","?tags="+Server.UrlEncode({dr[title]}))%>">{dr[title]}<i>({dr[count]})</i></a>
+                <%/foreach%>
+                </div>
+            </div>
+            
+            <div class="sidebar-box">
+                <h4>推荐新闻</h4>
+                <ul class="side-img-list">
+                <%set DataTable redNews=get_article_list("news", 0, 4, "status=0 and is_red=1 and img_url<>''")%>
+                <%foreach(DataRow dr in redNews.Rows)%>
+                    <li>
+                        <div class="img-box">
+                            <img src="{dr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("news_show",{dr[id]})%>">{dr[title]}</a>
+                            <span><%datetostr({dr[add_time]},yyyy-MM-dd)%></span>
+                        </div>
+                    </li>
+                <%/foreach%>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <!--/页面右边-->
+    
+    <!--页面左边-->
+    <div class="left-auto">
+        <div class="bg-wrap">
+            <!--取得一个DataTable-->
+            <%set DataTable list=get_search_list(15, out totalcount)%>
+            <!--取得分页页码列表-->
+            <%if({tags}!="")%>
+                <%set pagelist=get_page_link(15, page, totalcount, linkurl("search","?tags=" + Server.UrlEncode(tags) + "&page=__id__"))%>
+            <%else%>
+                <%set pagelist=get_page_link(15, page, totalcount, linkurl("search","?keyword=" + Server.UrlEncode(keyword) + "&page=__id__"))%>
+            <%/if%>
+            <div class="search-tit">
+                <h3>搜索结果</h3>
+                <%if({tags}!="")%>
+                <span>查询Tags标签：<strong>{tags}</strong>，共有<strong>{totalcount}</strong>条记录</span>
+                <%else%>
+                <span>搜索关健字：<strong>{keyword}</strong>，共有<strong>{totalcount}</strong>条记录</span>
+                <%/if%>
+            </div>
+            
+            <ul class="n-list">
+            <%foreach(DataRow dr in list.Rows)%>
+                <li>
+                    <h2><a href="{dr[link_url]}">{dr[title]}</a></h2>
+                    <div class="note">
+                        <%if({dr[img_url]}!="")%>
+                        <b><img src="{dr[img_url]}" /></b>
+                        <%/if%>
+                        <p>{dr[remark]}</p>
+                        <div class="info">
+                            <span><i class="iconfont icon-date"></i>{dr[add_time]}</span>
+                            <span><i class="iconfont icon-comment"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={dr[channel_id]}&id={dr[id]}"></script>人评论</span>
+                            <span><i class="iconfont icon-view"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={dr[channel_id]}&id={dr[id]}"></script>次浏览</span>
+                        </div>
+                    </div>
+                </li>
+            <%/foreach%>
+            <%if({totalcount}==0)%>
+                <div class="nodata">很抱歉，暂无查找到符合条件的信息！</div>
+            <%/if%>
+            </ul>
+            
+            <!--页码列表-->
+            <div class="page-box">
+                <div class="digg">{pagelist}</div>
+            </div>
+            <!--/页码列表-->
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

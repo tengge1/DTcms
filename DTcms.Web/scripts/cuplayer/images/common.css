@@ -1,0 +1,98 @@
+﻿@charset "utf-8";
+/* ----------------------------------------
+	* Filename:     common.css
+	* Description:  Global CSS
+	* CssCreate:    2016-01-16 16:16
+	* DesignBy:     CuPlayer.com
+------------------------------------------ */
+
+body {margin:0; padding:0;  margin-top:0px;font-size:12px; color:#313131;text-align: left; font-family:Verdana, Arial, Helvetica, sans-serif; background:#ffffff; }
+body { width:980px; margin:0 auto;}
+/*body { width:100%; margin:0 auto;}*/
+div,ul,li,ol,dl,dt,dd,form,img,p{margin: 0; padding: 0; border: 0; }
+li{list-style-type:none;}
+h4,h5{margin: 0; padding: 0; font-size:14px;}
+/* __link */
+a {color: #313131; text-decoration:none;}
+a:link {color: #313131;text-decoration:none;}
+a:visited {color: #313131;text-decoration:none;}
+a:hover {color: #990000; text-decoration:underline;}
+a:active {color: #313131;}
+.cRed,a.cRed:link,a.cRed:visited{ color:#ff0000; }
+.cRed2,a.cRed2:link,a.cRed2:visited{ color:#ce0400; } a.cRed2:hover{ color:#000000; text-decoration:underline; }
+.cBlue,a.cBlue:link,a.cBlue:visited,a.cBlue:active{color:#066bb7; }
+.cOrange,a.cOrange:link,a.cOrange:visited{ color:orangered; }
+div.clear {clear:both;height:0px;}
+div.clearfix { zoom:1;}
+div.clearfix:after {content:".";clear:both;height:0;display:block;visibility:hidden;}
+/* Hide from IE Mac \*/ 
+.clearfix { display:block; } 
+
+/* header --------------------- */
+div#header { height:44px; background:#2d2e2f; border-bottom:1px #000000 solid; overflow:hidden;}
+div#header div.logo {width:120px;float:left;}
+
+div#header div.info {width:45px;float:right;}
+div#header div.other {width:85px;float:right; line-height:44px;}
+div#header div.other a,div#header div.other a:link,div#header div.other a:visited { display:block; line-height:44px; color:#cccccc; font-size:14px;}
+/* footer --------------------- */
+div#footer { height:45px;line-height:45px;background:#333;font-size:1.2rem; z-index:1;  overflow:hidden;}
+div#footer .logo02{ width:118px;height:29px;float:left;margin:6px 0 0 5px}
+div#footer em{color:#444}
+div#footer .left-part{float:left;}
+div#footer .right-part{float:right;}
+div#footer em{color:#444}
+div#footer a,div#footer a:link,div#footer a:visited{color:#999;padding:0 10px; color:#cccccc; font-size:14px;}
+/* home -------------------------*/
+div.main h2 {  line-height:45px;height:55px;   font-family:"Microsoft YaHei",微软雅黑,Verdana, Arial, Helvetica, sans-serif; font-size:25px; font-weight:bold;border-bottom:2px #cccccc solid;}
+
+div.maincontent { margin-top:40px; clear:both;}
+div.maincontent fieldset{ border:1px #cccccc solid;padding:10px;margin-bottom:10px;display:block; font-family:Verdana, Arial, Helvetica, sans-serif;line-height:28px; text-align:left; background:#ffffff; }
+div.maincontent fieldset legend { padding:0;margin:0;line-height:28px;  }
+div.maincontent fieldset legend h4 { font-size:20px; }
+div.maincontent fieldset ul { margin:0;padding:0;}
+
+div.maincontent2 { margin-top:40px; clear:both;}
+div.maincontent2 fieldset{ border:1px #ce000d solid;padding:10px;margin-bottom:10px;display:block; font-family:Verdana, Arial, Helvetica, sans-serif;line-height:28px; text-align:left; background:#ffffff; }
+div.maincontent2 fieldset legend { padding:0;margin:0;line-height:28px; }
+div.maincontent2 fieldset legend h4 { font-size:20px; }
+div.maincontent2 fieldset ul { margin:0;padding:0;}
+fieldset div.pLink { float:left ; }
+fieldset div.pIntro { float:right ;border-left:1px #cccccc dashed; padding-left:15px;}
+
+ul.demo { height:50px; }
+ul.demo li { height:49px;line-height:49px;width:160px;float:left;text-align:center;font-size:12px;font-weight:bold; margin-right:15px; }
+ul.demo li a.demo,ul.demo li a.demo:link,ul.demo li a.demo:visited{ background:#4ca722 url(btn04_demo.gif) no-repeat top center; color:#ffffff; display:block; text-decoration:none; }
+ul.demo li a.demo:hover { background:#4ca722 url(btn04_demo.gif) no-repeat bottom center; text-decoration:none; }
+
+ul.demo li a.down,ul.demo li a.down:link,ul.down li a.down:visited{ background:#4ca722 url(btn04_down.gif) no-repeat top center; color:#ffffff; display:block; text-decoration:none; }
+ul.demo li a.down:hover { background:#4ca722 url(btn04_down.gif) no-repeat bottom center; text-decoration:none; }
+
+ul.intro { margin-top:15px; height:50px;  }
+ul.intro li { line-height:30px;height:30px;}
+ul.intro li strong { display:block; float:left;width:150px; font-size:14px; font-weight:bold; line-height:28px; background:#efefef; text-align:center;}
+ul.intro li span.info { display:block; float:left; width:220px;   font-size:14px; line-height:28px; padding-left:15px; }
+/* content --------------------- */
+div#content { background:#ffffff; }
+div#content div.video { background:#000000; }
+div#content div#CuPlayer { }
+div#content h3 { line-height:40px; height:40px; background:#cccccc; border-top:2px #515151 solid;}
+div#content h3 span { padding-left:20px;}
+
+div.piclist {padding:10px;}
+div.piclist dl { width:190px;float:left;}
+div.piclist dl dd { line-height:24px; height:48px; overflow:hidden; padding:0 10px; }
+a.p145x100 img { width:145px;height:100px; overflow:hidden; }  /*小图*/
+a.p145x100 { border:1px #dadada solid; padding:2px;display:block; width:145px;margin:0 auto;  background:white; height:100px; overflow:hidden; }
+a.p145x100:hover{ border:1px #eb6100 solid; } 
+
+/* other */
+.video { OVERFLOW: hidden; WIDTH: 100%; POSITION: relative}
+.close_light_bg {DISPLAY: none; BACKGROUND: #000; FILTER: alpha(opacity = 95); LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 100%; opacity: .95}
+div.help { line-height:32px; font-size:12px; padding:10px 20px;}
+div.help p.open { padding-left:5px;} 
+div.code { width:400px; float:right; line-height:32px; font-size:14px; font-weight:bold;}
+div.title {  line-height:32px; font-size:14px; font-weight:bold; }
+
+
+/* LastTime:2016-01-16 16:16 */

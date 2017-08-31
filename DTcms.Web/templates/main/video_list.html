@@ -1,0 +1,93 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{model.title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css">
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body id="video">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<%set string category_nav=get_category_menu("video_list", category_id)%>
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("video")%>">视频专区</a>
+        {category_nav}
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--/分类导航-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <div class="screen-box">
+            <ul>
+                <h4>筛选类别：</h4>
+                <%if(category_id==0)%>
+                    <li class="selected"><a href="<%linkurl("video_list",0)%>">全部</a></li>
+                <%else%>
+                    <li><a href="<%linkurl("video_list",0)%>">全部</a></li>
+                <%/if%>
+                <%set int currCategoryId=model.id%>
+                <%if(model.parent_id>0)%>
+                    <%set currCategoryId=model.parent_id%>
+                <%/if%>
+                <%set DataTable categoryList=get_category_child_list(channel,currCategoryId)%>
+                <%foreach(DataRow dr in categoryList.Rows)%>
+                <%if({strtoint({dr[id]})}==category_id)%>
+                    <li class="selected"><a href="<%linkurl("video_list",{dr[id]})%>">{dr[title]}</a></li>
+                <%else%>
+                    <li><a href="<%linkurl("video_list",{dr[id]})%>">{dr[title]}</a></li>
+                <%/if%>
+                <%/foreach%>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--/分类导航-->
+
+<!--内容列表-->
+<div class="section">
+    <div class="wrapper clearfix">
+        <ul class="img-list">
+        <%set DataTable videoList=get_article_list(channel, category_id, pagesize, page, "status=0", out totalcount, out pagelist, "video_list", category_id, "__id__")%>
+        <%foreach(DataRow dr in videoList.Rows)%>
+            <li>
+                <a title="{dr[title]}" href="<%linkurl("video_show",{dr[id]})%>">
+                    <div class="img-box"><img src="{dr[img_url]}" /></div>
+                    <em><i class="iconfont icon-play"></i></em>
+                    <div class="abs-bg"></div>
+                    <div class="remark">
+                        <h3>{dr[title]}</h3>
+                        <p>{dr[sub_title]}</p>
+                    </div>
+                </a>
+            </li>
+        <%/foreach%>
+        </ul>
+        
+        <!--页码列表-->
+        <div class="page-box" style="margin: 15px 0px 0px;">
+            <div class="digg">{pagelist}</div>
+        </div>
+        <!--/页码列表-->
+    </div>
+</div>
+<!--/内容列表-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

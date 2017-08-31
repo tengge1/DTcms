@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>极酷阳光播放器(CuSunPlayerV3.5)范例</title>
+
+<style type="text/css">
+<!--
+body { padding:10px;}
+.clear { height:30px;clear:both;  }
+h1 {  clear:both; height:60px; line-height:60px; } 
+div.help { line-height:32px; font-size:14px; clear:both; border-top:1px #cccccc solid; }
+div.help ol { clear:both; }
+div.help ol li { border-top:1px #f8f8f8 solid; width:240px;; float:left; }
+div.help ol li a,div.help ol li a:link,div.help ol li a:visited { display:block; text-decoration:none; }
+div.help ol li a:hover{ text-decoration:underline; color:#ce0400;}
+.cRed,a.cRed:link,a.cRed:visited{ color:#ce0400; } a.cRed2:hover{ color:#ce0400; text-decoration:underline; }
+.cRed3,a.cRed3:link,a.cRed3:visited{ color:#96570e; } a.cRed3:hover{ color:red; text-decoration:underline; }
+-->
+</style>
+</head>
+
+<body> 
+ 
+ 
+
+<div class="help">
+<h1>酷播V4.0版(基础应用范例)</h1>
+<ol type="1">
+     <li><a href="demo1.html" target="_blank" class="demo">自动播放(HTTP)</a></li>
+     <li><a href="demo2.html" target="_blank" class="demo">点击播放(HTTP)</a></li>
+     <li><a href="demo3.html" target="_blank" class="demo">同一页面显示多个视频</a></li>
+     <li><a href="demo4.html" target="_blank" class="demo">播放器与JS交互</a></li>
+     <li><a href="demo5.html" target="_blank" class="demo">使用HTML参数</a></li>
+     <li><a href="demo6.html" target="_blank" class="demo">使用配置文件参数</a></li>
+     <li><a href="demo7.html" target="_blank" class="demo">开启前置广告</a></li>
+     <li><a href="demo8.html" target="_blank" class="demo">开启视频广告</a></li>
+     <li><a href="demo9.html" target="_blank" class="demo">开启角标广告</a></li>
+     <li><a href="demo10.html" target="_blank" class="demo">开启暂停广告</a></li>
+     <li><a href="demo11.html" target="_blank" class="demo">开启后置广告</a></li>
+     <li><a href="demo12.html" target="_blank" class="demo">视频结束显推荐</a></li>
+     <li><a href="demo13.html" target="_blank" class="demo">RTMP流媒体点播</a></li>
+     <li><a href="demo14.html" target="_blank" class="demo">RTMP流媒体直播</a></li>
+     <li><a href="demo15.html" target="_blank" class="demo">视频循环播放</a></li>
+     <li><a href="demo16.html" target="_blank" class="demo">禁止拖动进度条</a></li>
+     <li><a href="demo17.html" target="_blank" class="demo">改变界面色彩(red)</a></li>
+     <li><a href="demo18.html" target="_blank" class="demo">改变界面色彩(blue)</a></li>
+ 
+     <li><a href="listDemo1.html" target="_blank" class="demo">简易列表连播(右侧图片)</a></li>
+     <li><a href="listDemo2.html" target="_blank" class="demo">简易列表连播(右侧文字)</a></li>
+     <li><a href="listDemo3.html" target="_blank" class="demo">简易列表连播(底部图片)</a></li>
+     <li><a href="listDemo4.html" target="_blank" class="demo">简易列表连播(底部集数)</a></li>
+</ol>
+</div>
+<div class="clear"></div>
+<div class="help">
+<h1>酷播V4.0版(多终端跨平台范例)支持PC/安卓/苹果/微信观看</h1>
+<p>在多终端跨平台方案中，只有 [<strong><a href="demoX1.html" target="_blank">跨平台方案X1</a></strong>] 是基于<strong>纯HTTP协议</strong>实现的（即通常的IIS/Apache等web站点环境就是http协议的），<br />
+其他所有方案都需要有<strong>RTMP流媒体环境</strong>做支持，<a href="index2.html" target="_blank">点击此处查看详细说明&gt;&gt;</a></p>
+<ol type="1">
+    <li><a href="demoX1.html" target="_blank" class="demo cRed"><strong>跨平台方案X1(点播)推荐</strong><strong></strong></a></li>
+    <li><a href="demoX2.html" target="_blank" class="demo">跨平台方案X2(点播)</a></li>
+    <li><a href="demoX3.html" target="_blank" class="demo">跨平台方案X3(点播)</a></li>
+    <li><a href="demoX4.html" target="_blank" class="demo">跨平台方案X4(点播)</a></li>
+</ol>
+
+<ol type="1">
+    <li><a href="LiveL1.html" target="_blank" class="demo">跨平台方案LiveL1(直播)</a></li>
+    <li><a href="LiveL2.html" target="_blank" class="demo">跨平台方案LiveL2(直播)</a></li>
+</ol>
+<div class="clear"></div>
+</div>
+<!-- help/Bgein -->
+<div class="help">
+ <p>
+  <strong>播放器使用环境及注意事项：</strong><br />
+        *  强烈建议使用<strong>酷播云端播放器</strong>（永久免费 /  支持视频数据统计分析），<a href="http://www.cuplayer.com/Cloud" target="_blank">马上使用&gt;&gt;</a><br />
+        *  请用户在IIS下或其它web网站环境下使用，<a href="http://www.cuplayer.com/CuPlayer/help/Step/" target="_blank">新手指南&gt;&gt;</a>；<br />
+        *  请确认您的环境是否支持支持flv,mp4等视频文件的mime类型，<a href="http://www.cuplayer.com/CuPlayer/help/Help71.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  播放器在使用过程中，支持加载XML(asp,php,jsp,aspx)等格式配置文件，<a href="http://www.cuplayer.com/CuPlayer/help/Help61.html" target="_blank" class="cOrange">详细参见&gt;&gt;</a>；<br />
+        *  建议使用之前了解一下本款播放器&ldquo;<strong>双重参机机制</strong>&rdquo;的含义，<a href="http://www.cuplayer.com/CuPlayer/help/Help23.html" target="_blank">详细参见&gt;&gt;</a>。<br />
+        * 请确认播放器相关的文件地址是否正确。<br />
+        <strong>遇到问题如何获得帮助：</strong>        <br />
+        * 官方应用文档：<a href="http://www.cuplayer.com/CuPlayer/help/index.html" target="_blank" class="cOrange">http://www.cuplayer.com/CuPlayer/help/index.html</a><br />
+        * 酷播官方客服：<a href="http://www.cuplayer.com/CuPlayer/service.html" target="_blank">http://www.cuplayer.com/CuPlayer/service.html</a><br />
+        <strong>如何正确的向客服提问？</strong> <br />
+    A:请将您的测试页上传到您的某个网站目录下，然后把测试页地址发给客服，此种情况下，问题解决率达90%以上。<br />
+    （如果您无法提供测试页地址，很多问题，无法协助您找出准确的原因）； <br />
+  B:不能提供外网测试页面的提问，问题解决率仅为5% 左右。<br />
+  <strong>酷播V4.0版官方网站：</strong> <a href="http://www.cuplayer.com/CuPlayer/" target="_blank">http://www.cuplayer.com/CuPlayer/</a><br />
+<strong>酷播云端播放器官方网站：</strong> <a href="http://www.cuplayer.com/Cloud/" target="_blank">http://www.cuplayer.com/Cloud/</a><br /></p>
+</div>
+<!-- help/End -->
+<div style="display:none;">
+<script type="text/javascript" src="http://www.cuplayer.com/CuPlayer/js/stat.js"></script>
+</div>
+</body>
+</html>
+

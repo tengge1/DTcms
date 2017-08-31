@@ -1,0 +1,332 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>站内短信息 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}scripts/artdialog/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/artdialog/dialog-plus-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+	function ExecPostBack(checkValue) {
+		if (arguments.length == 1) {
+			ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_message_delete', checkValue, '#turl');
+		}else{
+			var valueArr = '';
+			$("input[name='checkId']:checked").each(function(i){
+				valueArr += $(this).val();
+				if(i < $("input[name='checkId']:checked").length - 1){
+					valueArr += ","
+				}
+			});
+			ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_message_delete', valueArr, '#turl');
+		}
+    }
+</script>
+</head>
+
+<body>
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("usercenter","index")%>">会员中心</a>
+        <a href="<%linkurl("usermessage","list")%>">站内短消息</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<div class="section clearfix">
+    <!--页面左边-->
+    <%template src="_ucenter_nav.html"%>
+    <!--/页面左边-->
+    
+    <!--页面左边-->
+    <div class="right-auto">
+        <div class="bg-wrap" style="min-height:765px;">
+            
+            <%if(action=="system")%>
+            <!--系统消息-->
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usermessage","add")%>"><i class="iconfont icon-plus"></i>写消息</a>
+                <ul>
+                    <li class="selected">
+                        <a href="<%linkurl("usermessage","system")%>">系统消息</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("usermessage","accept")%>">收件箱</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("usermessage","send")%>">发件箱</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" class="mtable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <%set DataTable messageList=get_user_message_list(10, page, "accept_user_name='"+userModel.user_name+"' and type=1", out totalcount)%>
+                <%set string pagelist=get_page_link(10, page, totalcount, "usermessage", action, "__id__")%> <!--取得分页页码列表-->
+                <%foreach(DataRow dr in messageList.Rows)%>
+                    <tr>
+                        <td width="20" align="center">
+                            <input name="checkId" class="checkall" type="checkbox" value="{dr[id]}" >
+                        </td>
+                        <td>
+                            <a href="<%linkurl("usermessage_show",{dr[id]})%>">{dr[title]}</a>
+                        </td>
+                        <td width="30" align="center">
+                            <%if({dr[is_read]}=="1")%>
+                                已读
+                            <%else%>
+                                未读
+                            <%/if%>
+                        </td>
+                        <td width="150">
+                            {dr[post_time]}
+                        </td>
+                        <td width="38">
+                            <a onclick="ExecPostBack('{dr[id]}');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                <%/foreach%>
+                <%if(messageList.Rows.Count==0)%>
+                    <tr><td align="center">暂无短消息...</td></tr>
+                <%/if%>
+                </tbody>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                    <div class="btn-box">
+                        <a onclick="checkAll(this);" href="javascript:;">全选</a>
+                        <a onclick="ExecPostBack();" href="javascript:;">删除</a>
+                    </div>
+                </div>
+                
+            </div>
+            <input id="turl" type="hidden" value="<%linkurl("usermessage","system")%>" /><!--存在跳转的URL值-->
+            <!--/系统消息-->
+        
+            <%else if(action=="accept")%>
+            <!--收件箱-->
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usermessage","add")%>"><i class="iconfont icon-reply"></i>写消息</a>
+                <ul>
+                    <li>
+                        <a href="<%linkurl("usermessage","system")%>">系统消息</a>
+                    </li>
+                    <li class="selected">
+                        <a href="<%linkurl("usermessage","accept")%>">收件箱</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("usermessage","send")%>">发件箱</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" class="mtable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <%set DataTable messageList=get_user_message_list(10, page, "accept_user_name='"+userModel.user_name+"' and type=2", out totalcount)%>
+                <%set string pagelist=get_page_link(10, page, totalcount, "usermessage", action, "__id__")%> <!--取得分页页码列表-->
+                <%foreach(DataRow dr in messageList.Rows)%>
+                    <tr>
+                        <td width="20" align="center">
+                            <input name="checkId" class="checkall" type="checkbox" value="{dr[id]}" >
+                        </td>
+                        <td width="48">
+                            <%set string user_avatar=get_user_avatar({dr[post_user_name]})%>
+                            <%if(user_avatar=="")%>
+                                <img src="<%templateskin%>/images/user-avatar.png" width="48" height="48" />
+                            <%else%>
+                                <img src="{user_avatar}" width="48" height="48" alt="{dr[post_user_name]}" />
+                            <%/if%>
+                        </td>
+                        <td>
+                            <strong><a href="<%linkurl("usermessage_show",{dr[id]})%>">{dr[title]}</a></strong><br />
+                            发件人：{dr[post_user_name]}
+                        </td>
+                        <td width="30" align="center">
+                            <%if({dr[is_read]}=="1")%>
+                                已读
+                            <%else%>
+                                未读
+                            <%/if%>
+                        </td>
+                        <td width="150">
+                            {dr[post_time]}
+                        </td>
+                        <td width="30">
+                            <a onclick="ExecPostBack('{dr[id]}');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                <%/foreach%>
+                <%if(messageList.Rows.Count==0)%>
+                    <tr><td align="center">暂无短消息...</td></tr>
+                <%/if%>
+                </tbody>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                    <div class="btn-box">
+                        <a onclick="checkAll(this);" href="javascript:;">全选</a>
+                        <a onclick="ExecPostBack();" href="javascript:;">删除</a>
+                    </div>
+                </div>
+                
+            </div>
+            <input id="turl" type="hidden" value="<%linkurl("usermessage","accept")%>" /><!--存在跳转的URL值-->
+            <!--/收件箱-->
+            
+            <%else if(action=="send")%>
+            <!--发件箱-->
+            <div class="sub-tit">
+                <a class="add" href="<%linkurl("usermessage","add")%>"><i class="iconfont icon-reply"></i>写消息</a>
+                <ul>
+                    <li>
+                        <a href="<%linkurl("usermessage","system")%>">系统消息</a>
+                    </li>
+                    <li>
+                        <a href="<%linkurl("usermessage","accept")%>">收件箱</a>
+                    </li>
+                    <li class="selected">
+                        <a href="<%linkurl("usermessage","send")%>">发件箱</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="table-wrap">
+                <table width="100%" class="mtable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <%set DataTable messageList=get_user_message_list(10, page, "post_user_name='"+userModel.user_name+"' and type=3", out totalcount)%>
+                <%set string pagelist=get_page_link(10, page, totalcount, "usermessage", action, "__id__")%> <!--取得分页页码列表-->
+                <%foreach(DataRow dr in messageList.Rows)%>
+                    <tr>
+                        <td width="20" align="center">
+                            <input name="checkId" class="checkall" type="checkbox" value="{dr[id]}" >
+                        </td>
+                        <td width="48">
+                            <%set string user_avatar=get_user_avatar({dr[accept_user_name]})%>
+                            <%if(user_avatar=="")%>
+                                <img src="<%templateskin%>/images/user-avatar.png" width="48" height="48" />
+                            <%else%>
+                                <img src="{user_avatar}" width="48" height="48" alt="{dr[accept_user_name]}" />
+                            <%/if%>
+                        </td>
+                        <td>
+                            
+                            <strong><a href="<%linkurl("usermessage_show",{dr[id]})%>">{dr[title]}</a></strong><br />
+                            收件人：{dr[accept_user_name]}
+                        </td>
+                        <td width="150">
+                            {dr[post_time]}
+                        </td>
+                        <td width="30">
+                            <a onclick="ExecPostBack('{dr[id]}');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                <%/foreach%>
+                <%if(messageList.Rows.Count==0)%>
+                    <tr><td align="center">暂无短消息...</td></tr>
+                <%/if%>
+                </tbody>
+                </table>
+                
+                <div class="page-foot">
+                    <div class="flickr right">{pagelist}</div><!--放置页码列表-->
+                    <div class="btn-box">
+                        <a onclick="checkAll(this);" href="javascript:;">全选</a>
+                        <a onclick="ExecPostBack();" href="javascript:;">删除</a>
+                    </div>
+                </div>
+                
+            </div>
+            <input id="turl" type="hidden" value="<%linkurl("usermessage","send")%>" /><!--存在跳转的URL值-->
+            <!--/发件箱-->
+            
+            <%else if(action=="add")%>
+            <!--发布短信息-->
+            <link rel="stylesheet" type="text/css" href="{config.webpath}css/validate.css" />
+            <script type="text/javascript" src="{config.webpath}scripts/jquery/jquery.form.min.js"></script>
+            <script type="text/javascript" src="{config.webpath}scripts/jquery/Validform_v5.3.2_min.js"></script>
+            <script type="text/javascript">
+            $(function(){
+                //初始化表单
+                AjaxInitForm('#addForm', '#btnSubmit', 1, '#turl');
+            });
+            </script>
+            <div class="sub-tit">
+                <a class="add" href="javascript:history.go(-1);"><i class="iconfont icon-reply"></i>返回</a>
+                <ul>
+                    <li class="selected">
+                        <a href="javascript:;">发短消息</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <form id="addForm" name="addForm" url="{config.webpath}tools/submit_ajax.ashx?action=user_message_add">
+                <div class="form-box">
+                    <dl class="form-group">
+                        <dt>收件人：</dt>
+                        <dd>
+                            <input name="txtUserName" id="txtUserName" type="text" class="input" datatype="s1-50"  nullmsg="请填写收件人用户名" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>标 题：</dt>
+                        <dd>
+                            <input name="txtTitle" id="txtTitle" type="text" class="input" datatype="*1-50" sucmsg=" " />
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt>内 容：</dt>
+                        <dd>
+                            <textarea name="txtContent" class="textarea" datatype="*" sucmsg=" "></textarea>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <label><input name="sendSave" type="checkbox" value="true" checked="checked" /> 保存到发件箱</label>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <input id="txtCode" name="txtCode" type="text" class="input code" placeholder="输入验证码" datatype="s4-20" nullmsg="请输入右边显示的验证码" sucmsg=" " />
+                            <a class="send" href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                              <img src="{config.webpath}tools/verify_code.ashx" width="80" height="22" /> 看不清楚？
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dd>
+                            <input id="btnSubmit" name="btnSubmit" type="submit" value="确认发送" class="submit" />
+                        </dd>
+                    </dl>
+                    
+                </div>
+            </form>
+            <input id="turl" type="hidden" value="<%linkurl("usermessage","add")%>" /><!--存在跳转的URL值-->
+            <!--/发布短信息-->
+            <%/if%>
+            
+        </div>
+    </div>
+    <!--/页面左边-->
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>购物商城 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+    $("#focus-box").flexslider({
+        directionNav: false,
+		pauseOnAction: false
+	});
+});
+</script>
+</head>
+
+<body id="goods">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+
+<!--当前位置-->
+<div class="section">
+    <div class="location">
+        <span>当前位置：</span>
+        <a href="<%linkurl("index")%>">首页</a> &gt;
+        <a href="<%linkurl("goods")%>">购物商城</a>
+    </div>
+</div>
+<!--/当前位置-->
+
+<!--导航推荐-->
+<div class="section">
+    <div class="wrapper">
+        <div class="wrap-box">
+            <!--类别菜单-->
+            <div class="left-220" style="margin:0;">
+                <div class="banner-nav">
+                    <ul>
+                    <!--此处声明下面可重复循环-->
+                    <%set DataTable categoryList=get_category_child_list(channel,0)%>
+                    <%foreach(DataRow cdr in categoryList.Rows)%>
+                        <%set DataTable bcategoryList=get_category_child_list(channel,{strtoint({cdr[id]})})%>
+                        <li>
+                            <h3>
+                                <i class="iconfont icon-arrow-right"></i>
+                                <span>{cdr[title]}</span>
+                                <p>
+                                <%foreach(DataRow dr in bcategoryList.Rows)%>
+                                    {dr[title]}
+                                <%/foreach%>
+                                </p>
+                            </h3>
+                            <div class="item-box">
+                                <!--如有三级分类，此处可循环-->
+                                <dl>
+                                    <dt><a href="<%linkurl("goods_list",{cdr[id]})%>">{cdr[title]}</a></dt>
+                                    <dd>
+                                        <%foreach(DataRow dr in bcategoryList.Rows)%>
+                                        <a href="<%linkurl("goods_list",{dr[id]})%>">{dr[title]}</a>
+                                        <%/foreach%>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                    <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <!--/类别菜单-->
+            
+            <!--幻灯片-->
+            <div class="left-705">
+                <div class="banner-img">
+                    <div id="focus-box" class="focus-box">
+                        <ul class="slides">
+                            <li>
+                                <a href="<%linkurl("goods")%>">
+                                    <img src="<%templateskin%>/images/focus_1.png" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<%linkurl("goods")%>">
+                                    <img src="<%templateskin%>/images/focus_2.png" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+            <!--/幻灯片-->
+            
+            <!--推荐商品-->
+            <div class="left-220">
+                <ul class="side-img-list">
+                <%set DataTable redList=get_article_list(channel, 0, 4, "status=0 and is_red=1")%>
+                <%loop reddr redList%>
+                    <li>
+                        <div class="img-box">
+                            <label>{reddr__loop__id}</label>
+                            <img src="{reddr[img_url]}" />
+                        </div>
+                        <div class="txt-box">
+                            <a href="<%linkurl("goods_show",{reddr[id]})%>">{reddr[title]}</a>
+                            <span><%datetostr({reddr[add_time]},yyyy-MM-dd)%></span>
+                        </div>
+                    </li>
+                <%/loop%>
+                </ul>
+            </div>
+            <!--/推荐商品-->
+        </div>
+    </div>
+</div>
+<!--分类推荐-->
+<div class="section">
+    <%foreach(DataRow cdr in categoryList.Rows)%>
+    <!--子类-->
+    <div class="main-tit">
+        <h2>{cdr[title]}</h2>
+        <p>
+            <%set DataTable bcategoryList=get_category_child_list(channel,{strtoint({cdr[id]})})%>
+            <%foreach(DataRow dr in bcategoryList.Rows)%>
+            <a href="<%linkurl("goods_list",{dr[id]})%>">{dr[title]}</a>
+            <%/foreach%>
+            <a href="<%linkurl("goods_list",{cdr[id]})%>">更多<i>+</i></a>
+        </p>
+    </div>
+    <!--/子类-->
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <ul class="img-list">
+            <%set DataTable dt=get_article_list(channel, {strtoint({cdr[id]})}, 5, "status=0")%>
+            <%foreach(DataRow dr in dt.Rows)%>
+                <li>
+                    <a href="<%linkurl("goods_show",{dr[id]})%>">
+                        <div class="img-box"><img src="{dr[img_url]}" /></div>
+                        <div class="info">
+                            <h3>{dr[title]}</h3>
+                            <p class="price"><b>¥{dr[sell_price]}</b>元</p>
+                            <p>
+                                <strong>库存 {dr[stock_quantity]}</strong>
+                                <span>市场价：<s>{dr[market_price]}</s></span>
+                            </p>
+                        </div>
+                    </a>
+                </li>
+            <%/foreach%>
+            </ul>
+        </div>
+    </div>
+    <%/foreach%>
+
+</div>
+<!--/分类推荐-->
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>
